@@ -7,6 +7,7 @@
         Up,
         Down,
         Space,
-        P
+        P,
+        A
     }
 }

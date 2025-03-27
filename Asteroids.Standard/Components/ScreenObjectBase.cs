@@ -179,7 +179,7 @@ namespace Asteroids.Standard.Components
         /// by a number of decimal degrees.
         /// </summary>
         /// <param name="degrees">Rotation amount in degrees.</param>
-        protected void Rotate(double degrees)
+        protected internal virtual void Rotate(double degrees)
         {
             //Get radians in 1/FramesPerSecond increments
             var radiansAdjust = degrees * ScreenCanvas.RadiansPerDegree;

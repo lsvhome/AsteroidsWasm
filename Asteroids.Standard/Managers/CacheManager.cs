@@ -17,10 +17,9 @@ namespace Asteroids.Standard.Managers
         /// <summary>
         /// Create a new instance of <see cref="CacheManager"/>.
         /// </summary>
-        public CacheManager(ScoreManager score, Ship? ship, AsteroidBelt belt, IList<Bullet> bullets)
+        public CacheManager(ScoreManager score, AsteroidBelt belt, IList<Bullet> bullets)
         {
             Score = score;
-            Ship = ship;
             Belt = belt;
             _bullets = bullets.ToList();
 
@@ -121,10 +120,15 @@ namespace Asteroids.Standard.Managers
         public void UpdateShip(Ship? ship)
         {
             Ship = ship;
+            if (Ship != null)
+            {
+                var navigation = new ShipEnvironmentFPVManager(this);
+                Ship.AutoPilot = new ShipAutoPilot(navigation, Ship);
 
-            ShipPoints = Ship?.IsAlive == true
-                ? Ship.GetPoints()
-                : null;
+                ShipPoints = Ship?.IsAlive == true
+                    ? Ship.GetPoints()
+                    : null;
+            }
         }
 
         /// <summary>

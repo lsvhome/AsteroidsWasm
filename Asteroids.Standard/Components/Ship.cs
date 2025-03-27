@@ -13,7 +13,7 @@ namespace Asteroids.Standard.Components
     /// </summary>
     internal sealed class Ship : ScreenObjectBase
     {
-        private const double RotateSpeed = 12000 / ScreenCanvas.FramesPerSecond;
+        internal const double RotateSpeed = 12000 / ScreenCanvas.FramesPerSecond;
 
         /// <summary>
         /// Creates and immediately draws an instance of <see cref="Ship"/>.
@@ -24,6 +24,8 @@ namespace Asteroids.Standard.Components
             ExplosionLength = 2;
             InitPoints();
         }
+
+        public ShipAutoPilot? AutoPilot { get; set; }
 
         /// <summary>
         /// Initialize the internal point collections base on the template.
@@ -108,6 +110,16 @@ namespace Asteroids.Standard.Components
             PlaySound(this, ActionSound.Thrust);
         }
 
+        protected internal override void Rotate(double degrees)
+        {
+            if (Math.Abs(degrees) > Math.Abs(RotateSpeed))
+            {
+                degrees = RotateSpeed;
+            }
+
+            base.Rotate(degrees);
+        }
+
         /// <summary>
         /// Rotate the ship left by one frame's worth.
         /// </summary>
@@ -122,6 +134,11 @@ namespace Asteroids.Standard.Components
         public void RotateRight()
         {
             Rotate(RotateSpeed);
+        }
+
+        public void DoAutoPilot()
+        {
+            this.AutoPilot?.Execute();
         }
 
         #region Statics

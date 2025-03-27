@@ -163,7 +163,7 @@ namespace Asteroids.Standard.Screen
                 (int)(origin.Y / CanvasHeightDouble * Size.Height)
             );
 
-            var ptDraw2 = new Point(ptDraw.X + canvasOffsetX, ptDraw.Y + canvasOffsetY);
+            var ptDraw2 = new Point(ptDraw.X + (int)(canvasOffsetX / CanvasWidthDouble * Size.Width), ptDraw.Y + (int)(canvasOffsetY / CanvasHeightDouble * Size.Height));
             AddLine(ptDraw, ptDraw2, penColor);
         }
 

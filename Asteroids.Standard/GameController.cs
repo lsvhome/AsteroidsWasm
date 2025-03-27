@@ -68,6 +68,7 @@ namespace Asteroids.Standard
         private TitleScreen _currentTitle;
         private Game _game;
 
+        private bool _APressed;
         private bool _leftPressed;
         private bool _rightPressed;
         private bool _upPressed;
@@ -158,6 +159,7 @@ namespace Asteroids.Standard
                     _scoreManager.ResetGame();
                     _game = new Game(_scoreManager, _textManager, _screenCanvas);
                     GameStatus = GameMode.Game;
+                    _APressed = true;
                     _leftPressed = false;
                     _rightPressed = false;
                     _upPressed = false;
@@ -182,6 +184,12 @@ namespace Asteroids.Standard
                 else if (key == PlayKey.Up)
                 {
                     _upPressed = true;
+                }
+
+                else if (key == PlayKey.A)
+                {
+                    _APressed = !_APressed;
+                    Console.WriteLine($"_APressed {_APressed}");
                 }
 
                 // Hyperspace (can't be held down)
@@ -213,6 +221,12 @@ namespace Asteroids.Standard
         /// <param name="key"><see cref="PlayKey"/> to apply.</param>
         public void KeyUp(PlayKey key)
         {
+            // Autopilot
+            if (key == PlayKey.A)
+            {
+                // Autopilot would be swithed off by second press to A - do nothing
+            }
+
             // Rotate Left
             if (key == PlayKey.Left)
                 _leftPressed = false;
@@ -268,6 +282,11 @@ namespace Asteroids.Standard
 
             if (_rightPressed)
                 _game.Right();
+
+            if (_APressed)
+            {
+                _game.DoAutoPilot();
+            }
 
             _game.Thrust(_upPressed);
             _game.DrawScreen();

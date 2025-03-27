@@ -43,7 +43,6 @@ namespace Asteroids.Standard.Screen
 
             _cache = new CacheManager(
                 new ScoreManager(new TextManager(_canvas))
-                , null
                 , new AsteroidBelt(15, Asteroid.AsteroidSize.Small)
                 , new List<Bullet>()
             );

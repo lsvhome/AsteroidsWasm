@@ -51,10 +51,12 @@ namespace Asteroids.Standard.Screen
             //Setup caches with a new ship
             _cache = new CacheManager(
                 _score
-                , new Ship()
                 , new AsteroidBelt(_currentLevel)
                 , Enumerable.Range(0, 4).Select(i => new Bullet()).ToList()
             );
+
+            var ship = new Ship();
+            _cache.UpdateShip(ship);
 
             _collisionManager = new CollisionManager(_cache);
             _drawingManager = new DrawingManager(_cache, canvas);
@@ -247,6 +249,14 @@ namespace Asteroids.Standard.Screen
                 return;
 
             _cache.Ship.RotateLeft();
+        }
+
+        public void DoAutoPilot()
+        {
+            if (_paused || _cache.Ship?.IsAlive != true)
+                return;
+
+            _cache.Ship.DoAutoPilot();
         }
 
         /// <summary>
