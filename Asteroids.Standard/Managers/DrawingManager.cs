@@ -44,6 +44,11 @@ namespace Asteroids.Standard.Managers
             _canvas.LoadVector(origin, offsetX, offsetY, color);
         }
 
+        private void DrawDot(Point origin, DrawColor color)
+        {
+            _canvas.LoadVector(origin, 0, 0, color);
+        }
+
         #endregion
 
         #region Draw Objects
@@ -53,12 +58,36 @@ namespace Asteroids.Standard.Managers
         /// </summary>
         public void DrawObjects()
         {
-            DrawShip();
-            DrawSaucer();
-            DrawBullets();
-            DrawBelt();
-            DrawExplosions();
+            foreach (var obj in _cache.GetIDrawableObjects())
+            {
+                DrawIDrawableObjects(obj);
+            }
+
+            //DrawShip();
+            //DrawSaucer();
+            //DrawBullets();
+            //DrawBelt();
+            //DrawExplosions();
         }
+
+        private void DrawIDrawableObjects(IDrawableObject obj)
+        {
+            foreach (var polygon in obj.Poligons)
+            {
+                DrawPolygon(polygon.Points.Select(p=> new Point((int)p.X, (int)p.Y)).ToList(), polygon.Color);
+            }
+
+            foreach (var vectorD in obj.Vectors)
+            {
+                DrawVector(new Point((int)vectorD.Start.X, (int)vectorD.Start.Y), (int)(vectorD.End.X - vectorD.Start.X), (int)(vectorD.End.Y - vectorD.Start.Y), vectorD.Color);
+            }
+
+            foreach (var pointD in obj.Dots)
+            {
+                DrawDot(new Point((int)pointD.X, (int)pointD.Y), pointD.Color);
+            }
+        }
+
 
         /// <summary>
         /// Draw Ship.
@@ -184,6 +213,5 @@ namespace Asteroids.Standard.Managers
         }
 
         #endregion
-
     }
 }

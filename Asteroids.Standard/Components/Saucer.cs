@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Screen;
@@ -10,7 +11,7 @@ namespace Asteroids.Standard.Components
     /// <summary>
     /// Flying saucer to attack primary ship with guided missiles.
     /// </summary>
-    internal sealed class Saucer : ScreenObjectBase
+    internal sealed class Saucer : ScreenObjectBase, IDrawableObject
     {
         public const int MaximumPasses = 3;
         public const int KillScore = 1000;
@@ -146,5 +147,30 @@ namespace Asteroids.Standard.Components
         }
 
         #endregion
+
+        #region IDrawableObject
+
+        public IList<PointD> Dots => new List<PointD>();
+
+        public IList<IVectorD> Vectors => new List<IVectorD>();
+
+        public IList<IPoligonD> Poligons
+        {
+            get
+            {
+                var ret = new List<IPoligonD>();
+                ret.Add(new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() });
+                if (this.Missile != null)
+                {
+                    ret.Add(new Poligon { Color = DrawColor.White, Points = Missile.GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() });
+                }
+
+                return ret;
+            }
+        }
+
+        public IList<Text> Texts => new List<Text>();
+
+        #endregion IDrawableObject
     }
 }

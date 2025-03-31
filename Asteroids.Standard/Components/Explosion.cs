@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
+using Asteroids.Standard.Enums;
 using Asteroids.Standard.Helpers;
 using Asteroids.Standard.Screen;
 
@@ -7,7 +10,7 @@ namespace Asteroids.Standard.Components
     /// <summary>
     /// Screen explosion with sized incremented by current frame.
     /// </summary>
-    internal sealed class Explosion
+    internal sealed class Explosion: IDrawableObject
     {
         /// <summary>
         /// More points is more dazzling.
@@ -82,5 +85,31 @@ namespace Asteroids.Standard.Components
             _framesRemaining -= 1;
             return true;
         }
+
+        #region IDrawableObject
+
+        public IList<PointD> Dots => new List<PointD>();
+
+        public IList<IVectorD> Vectors
+        {
+            get
+            {
+                var ret = new List<IVectorD>();
+                foreach (var point in this.Points)
+                {
+                    var start = new PointD { X= point.X, Y = point.Y };
+                    var end = new PointD { X = start.X + 1, Y = start.Y + 1 };
+                    var v = new VectorD { Start = start,  End = end, Color = RandomizeHelper.GetRandomFireColor() };
+                    ret.Add(v);
+                }
+                return ret;
+            }
+        }
+
+        public IList<IPoligonD> Poligons => new List<IPoligonD>();
+
+        public IList<Text> Texts => new List<Text>();
+
+        #endregion IDrawableObject
     }
 }

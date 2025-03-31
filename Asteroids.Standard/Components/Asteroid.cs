@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Asteroids.Standard.Enums;
+using System.Linq;
 using Asteroids.Standard.Helpers;
 using Asteroids.Standard.Screen;
 
@@ -9,7 +11,7 @@ namespace Asteroids.Standard.Components
     /// <summary>
     /// Summary description for Asteroid.
     /// </summary>
-    internal sealed class Asteroid : ScreenObjectBase
+    internal sealed class Asteroid : ScreenObjectBase, IDrawableObject
     {
         /// <summary>
         /// Current rotation speed of the asteroid.
@@ -26,8 +28,9 @@ namespace Asteroids.Standard.Components
 
             // Can't place the object randomly in constructor - stinky
             CurrentLocation.X = RandomizeHelper.Random.Next(2) * (ScreenCanvas.CanvasWidth - 1);
-            CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight - 1);
+            //CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight - 1);
 
+            CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight*3/4, ScreenCanvas.CanvasHeight - 1);
             RandomVelocity();
             InitPoints();
         }
@@ -179,5 +182,17 @@ namespace Asteroids.Standard.Components
         }
 
         #endregion
+
+        #region IDrawableObject
+
+        public IList<PointD> Dots => new List<PointD>();
+
+        public IList<IVectorD> Vectors => new List<IVectorD>();
+
+        public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
+
+        public IList<Text> Texts => new List<Text>();
+
+        #endregion IDrawableObject
     }
 }

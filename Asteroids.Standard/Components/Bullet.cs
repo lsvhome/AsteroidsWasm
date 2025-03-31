@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Asteroids.Standard.Enums;
+using System.Linq;
 using Asteroids.Standard.Screen;
 
 namespace Asteroids.Standard.Components
@@ -8,7 +10,7 @@ namespace Asteroids.Standard.Components
     /// <summary>
     /// Bullet is a missile fired by an object (ship or UFO)
     /// </summary>
-    internal sealed class Bullet : ScreenObjectBase
+    internal sealed class Bullet : ScreenObjectBase, IDrawableObject
     {
         private int _remainingFrames;
 
@@ -92,5 +94,17 @@ namespace Asteroids.Standard.Components
         }
 
         #endregion
+
+        #region IDrawableObject
+
+        public IList<PointD> Dots => new List<PointD>();
+
+        public IList<IVectorD> Vectors => new List<IVectorD>();
+
+        public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
+
+        public IList<Text> Texts => new List<Text>();
+
+        #endregion IDrawableObject
     }
 }

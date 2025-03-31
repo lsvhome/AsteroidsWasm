@@ -59,6 +59,7 @@ namespace Asteroids.Standard
                     var objLoc = TransformViewToFPV(obj.ScreenObject, _cache.Ship);
                     objLoc.ObjectType = ObjectType.Asteroid;
                     objLoc.Distance = objLoc.CenterCoordinates.Distance - asteroidRadius;
+                    objLoc.Velocity = new PointF((float)obj.ScreenObject.GetVelocityX(), (float)obj.ScreenObject.GetVelocityY());
                     ret.Add(objLoc);
                 }
 

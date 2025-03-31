@@ -16,7 +16,7 @@ namespace Asteroids.Standard.Screen
     {
         #region Fields and Constructor
 
-        private const int AsteroidStartCount = 4;
+        private const int AsteroidStartCount = 1;//4;
         private const int SaucerScore = 1000;
         private const int PauseInterval = (int)ScreenCanvas.FramesPerSecond;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Helpers;
 using Asteroids.Standard.Screen;
@@ -11,7 +12,7 @@ namespace Asteroids.Standard.Components
     /// <summary>
     /// Primary craft for the user to control.
     /// </summary>
-    internal sealed class Ship : ScreenObjectBase
+    internal sealed class Ship : ScreenObjectBase, IDrawableObject
     {
         internal const double RotateSpeed = 12000 / ScreenCanvas.FramesPerSecond;
 
@@ -181,5 +182,19 @@ namespace Asteroids.Standard.Components
         }
 
         #endregion
+
+
+
+        #region IDrawableObject
+
+        public IList<PointD> Dots => new List<PointD>();
+
+        public IList<IVectorD> Vectors => new List<IVectorD>();
+
+        public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
+
+        public IList<Text> Texts => new List<Text>();
+
+        #endregion IDrawableObject
     }
 }

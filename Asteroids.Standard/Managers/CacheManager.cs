@@ -340,5 +340,43 @@ namespace Asteroids.Standard.Managers
 
         #endregion
 
+        public IList<IDrawableObject> GetIDrawableObjects()
+        {
+            var ret = new List<IDrawableObject>();
+
+            if (Ship != null)
+            {
+                ret.Add(Ship);
+                
+                if (Ship.AutoPilot != null)
+                {
+                    ret.Add(Ship.AutoPilot);
+                }
+            }
+
+            if (Saucer != null)
+            {
+                ret.Add(Saucer);
+            }
+
+            if (_bulletsInFlight != null)
+            {
+                foreach (var bullet in _bulletsInFlight)
+                {
+                    ret.Add(bullet.ScreenObject);
+                }
+            }
+
+            if (_asteroids != null)
+            {
+                foreach (var asteroid in _asteroids)
+                {
+                    ret.Add(asteroid.ScreenObject);
+                }
+            }
+
+            return ret;
+        }
+
     }
 }

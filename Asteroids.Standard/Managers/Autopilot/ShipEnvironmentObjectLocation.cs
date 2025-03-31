@@ -1,4 +1,6 @@
-﻿namespace Asteroids.Standard
+﻿using System.Drawing;
+
+namespace Asteroids.Standard
 {
     internal class ShipEnvironmentObjectLocation
     {
@@ -15,5 +17,7 @@
 
         public ObjectType ObjectType { get; set; }
         public double Distance { get; set; }
+
+        public PointF? Velocity { get; set; }
     }
 }
