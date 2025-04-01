@@ -122,8 +122,11 @@ namespace Asteroids.Standard.Managers
             Ship = ship;
             if (Ship != null)
             {
-                var navigation = new ShipEnvironmentFPVManager(this);
-                Ship.AutoPilot = new ShipAutoPilot(navigation, Ship);
+                if (Ship.AutoPilot == null)
+                {
+                    var navigation = new ShipEnvironmentFPVManager(this);
+                    Ship.AutoPilot = new ShipAutoPilot(navigation, Ship);
+                }
 
                 ShipPoints = Ship?.IsAlive == true
                     ? Ship.GetPoints()

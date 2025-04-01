@@ -146,20 +146,6 @@ namespace Asteroids.Standard
             }
         }
 
-        public static Point TransformPolarToDecart(PolarCoordinates vector)
-        {
-            try
-            {
-                var x = vector.Distance * -Math.Sin(vector.Angle);
-                var y = vector.Distance * Math.Cos(vector.Angle);
-                return new Point((int)x, (int)y);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                throw;
-            }
-        }
 
         public static double NormalizeAngle(double angle)
         {
