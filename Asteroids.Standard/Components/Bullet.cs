@@ -42,6 +42,7 @@ namespace Asteroids.Standard.Components
             _remainingFrames = 0;
         }
 
+        public static double InitialVelocity = 100;
         /// <summary>
         /// Fire the bullet from a parent ship.
         /// </summary>
@@ -55,8 +56,8 @@ namespace Asteroids.Standard.Components
             var sinVal = Math.Sin(Radians);
             var cosVal = Math.Cos(Radians);
 
-            VelocityX = (int)(-100 * sinVal) + parentShip.GetVelocityX();
-            VelocityY = (int)(100 * cosVal) + parentShip.GetVelocityY();
+            VelocityX = (int)(-InitialVelocity * sinVal) + parentShip.GetVelocityX();
+            VelocityY = (int)(InitialVelocity * cosVal) + parentShip.GetVelocityY();
         }
 
         /// <summary>

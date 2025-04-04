@@ -92,7 +92,7 @@ namespace Asteroids.Standard
                 right = NormalizeAngle(right1);
 
                 // Console.WriteLine($"Obj location = [ {l} ], shipLocation = {shipLocation}, relative [ {p} ] ");
-                Console.WriteLine($"Obj relative to ship angle = [ {center.Angle} = {MathHelper.ToDegrees(center.Angle)} ], obj dist = {center.Distance}");
+                //Console.WriteLine($"Obj relative to ship angle = [ {center.Angle} = {MathHelper.ToDegrees(center.Angle)} ], obj dist = {center.Distance}");
 
                 return new ShipEnvironmentObjectLocation(center, left1, right1);
             }
@@ -122,22 +122,7 @@ namespace Asteroids.Standard
             try
             {
                 Point relativeLocation = new Point(target.X - observer.X, target.Y - observer.Y);
-                return TransformDecartToPolar(relativeLocation);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                throw;
-            }
-        }
-        internal PolarCoordinates TransformDecartToPolar(Point vector)
-        {
-            try
-            {
-                var distance = Math.Sqrt(Math.Pow(vector.X, 2) + Math.Pow(vector.Y, 2));
-                var angle = Math.Atan2(vector.Y, vector.X) - Math.PI / 2;
-                angle = NormalizeAngle(angle);
-                return new PolarCoordinates { Distance = distance, Angle = angle };
+                return MathHelper.TransformDecartToPolar(relativeLocation);
             }
             catch (Exception ex)
             {

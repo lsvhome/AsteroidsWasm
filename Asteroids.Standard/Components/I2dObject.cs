@@ -1,5 +1,6 @@
 ﻿using Asteroids.Standard.Enums;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Drawing;
@@ -9,11 +10,30 @@ namespace Asteroids.Standard.Components
 {
     public class PointD
     {
+        public PointD()
+        {
+        }
+        public PointD(PolarCoordinates data)
+        {
+            var t = MathHelper.TransformPolarToDecart(data);
+            this.X = t.X;
+            this.Y = t.Y;
+        }
+
         public DrawColor Color { get; set; } = DrawColor.White;
         public double X { get; set; }
         public double Y { get; set; }
 
-        public static implicit operator Point(PointD p) => new PointD { X = p.X, Y = p.Y };
+        public static PointD operator + (PointD a, PointD b) => new PointD { X = a.X + b.X, Y = a.Y+b.Y };
+        public static PointD operator -(PointD a, PointD b) => new PointD { X = a.X - b.X, Y = a.Y - b.Y };
+
+        public static implicit operator Point(PointD p) => new Point { X = (int)p.X, Y = (int)p.Y };
+        public static implicit operator PointD(Point p) => new PointD { X = p.X, Y = p.Y };
+        public PolarCoordinates GetPolarCoordinates()
+        {
+            var ret = MathHelper.TransformDecartToPolar(this);
+            return ret;
+        }
     }
 
     public interface Text
@@ -36,6 +56,18 @@ namespace Asteroids.Standard.Components
         public DrawColor Color { get; set; } = DrawColor.White;
         public PointD Start { get; set; } = new PointD();
         public PointD End { get; set; } = new PointD();
+
+        public PolarCoordinates GetPolarCoordinates()
+        {
+            var ret = MathHelper.TransformDecartToPolar(new PointD { X = End.X - Start.X, Y = End.Y - Start.Y });
+            return ret;
+        }
+        public void SetPolarCoordinates(PolarCoordinates data)
+        {
+            var ret = MathHelper.TransformPolarToDecart(data);
+            End.X = Start.X + ret.X;
+            End.Y = Start.Y + ret.Y;
+        }
     }
 
 

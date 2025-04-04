@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Asteroids.Standard.Components;
+using System;
 using System.Drawing;
 
 namespace Asteroids.Standard
@@ -12,9 +13,9 @@ namespace Asteroids.Standard
 
         public static double NormalizeAngle(double radians)
         {
-            while (radians < 0)
+            while (radians < -Math.PI)
                 radians += 2 * Math.PI;
-            while (radians >= 2 * Math.PI)
+            while (radians >= Math.PI)
                 radians -= 2 * Math.PI;
             return radians;
         }
@@ -32,6 +33,27 @@ namespace Asteroids.Standard
                 Console.WriteLine(ex.ToString());
                 throw;
             }
+        }
+
+        public static PolarCoordinates TransformDecartToPolar(PointD vector)
+        {
+            try
+            {
+                var distance = Math.Sqrt(Math.Pow(vector.X, 2) + Math.Pow(vector.Y, 2));
+                var angle = Math.Atan2(vector.Y, vector.X) - Math.PI / 2;
+                angle = NormalizeAngle(angle);
+                return new PolarCoordinates { Distance = distance, Angle = angle };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
+        }
+
+        public static PolarCoordinates TransformDecartToPolar(VectorD vector)
+        {
+            return TransformDecartToPolar(vector.End - vector.Start);
         }
     }
 }

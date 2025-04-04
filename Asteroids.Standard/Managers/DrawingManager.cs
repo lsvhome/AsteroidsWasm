@@ -72,19 +72,27 @@ namespace Asteroids.Standard.Managers
 
         private void DrawIDrawableObjects(IDrawableObject obj)
         {
-            foreach (var polygon in obj.Poligons)
+            try
             {
-                DrawPolygon(polygon.Points.Select(p=> new Point((int)p.X, (int)p.Y)).ToList(), polygon.Color);
-            }
 
-            foreach (var vectorD in obj.Vectors)
-            {
-                DrawVector(new Point((int)vectorD.Start.X, (int)vectorD.Start.Y), (int)(vectorD.End.X - vectorD.Start.X), (int)(vectorD.End.Y - vectorD.Start.Y), vectorD.Color);
-            }
+                foreach (var polygon in obj.Poligons)
+                {
+                    DrawPolygon(polygon.Points.Select(p => new Point((int)p.X, (int)p.Y)).ToList(), polygon.Color);
+                }
 
-            foreach (var pointD in obj.Dots)
+                foreach (var vectorD in obj.Vectors)
+                {
+                    DrawVector(new Point((int)vectorD.Start.X, (int)vectorD.Start.Y), (int)(vectorD.End.X - vectorD.Start.X), (int)(vectorD.End.Y - vectorD.Start.Y), vectorD.Color);
+                }
+
+                foreach (var pointD in obj.Dots)
+                {
+                    DrawDot(new Point((int)pointD.X, (int)pointD.Y), pointD.Color);
+                }
+            }
+            catch (Exception ex)
             {
-                DrawDot(new Point((int)pointD.X, (int)pointD.Y), pointD.Color);
+                Console.WriteLine(ex.ToString());
             }
         }
 
