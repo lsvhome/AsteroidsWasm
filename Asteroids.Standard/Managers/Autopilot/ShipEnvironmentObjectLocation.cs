@@ -8,8 +8,8 @@ namespace Asteroids.Standard
         public ShipEnvironmentObjectLocation(PolarCoordinates centerCoordinates, double relativeLeftAngle, double relativeRightAngle)
         {
             CenterCoordinates = centerCoordinates;
-            LeftRelativeToCenterAngle = ShipEnvironmentFPVManager.NormalizeAngle(centerCoordinates.Angle - relativeLeftAngle);
-            RightRelativeToCenterAngle = ShipEnvironmentFPVManager.NormalizeAngle(centerCoordinates.Angle + relativeRightAngle);
+            LeftRelativeToCenterAngle = MathHelper.NormalizeAngle(centerCoordinates.Angle - relativeLeftAngle);
+            RightRelativeToCenterAngle = MathHelper.NormalizeAngle(centerCoordinates.Angle + relativeRightAngle);
         }
 
         public PolarCoordinates CenterCoordinates { get; set; }

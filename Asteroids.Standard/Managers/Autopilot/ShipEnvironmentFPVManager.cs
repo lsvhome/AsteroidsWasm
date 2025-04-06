@@ -44,11 +44,13 @@ namespace Asteroids.Standard
 
                 if (_cache.Saucer != null)
                 {
+                    var obj = _cache.Saucer;
                     var objLoc = TransformViewToFPV(_cache.Saucer, _cache.Ship);
                     objLoc.ObjectType = ObjectType.Saucer;
                     var allpoints = _cache.Saucer.GetPoints();
                     var half = allpoints.Select(p => Math.Max(Math.Abs(p.X- _cache.Saucer.GetCurrentLocation().X), Math.Abs(p.Y- _cache.Saucer.GetCurrentLocation().Y))).Max();
                     objLoc.Distance = objLoc.CenterCoordinates.Distance - half;
+                    objLoc.Velocity = new PointF((float)obj.GetVelocityX(), (float)obj.GetVelocityY());
                     ret.Add(objLoc);
                 }
 
@@ -88,8 +90,8 @@ namespace Asteroids.Standard
                 var right = obj.GetPoints().Select(p => TransformDecartToPolar(shipLocation, p).Angle - shipDirectionRadians).Max();
                 var left1 = center.Angle - left;
                 var right1 = right - center.Angle;
-                left = NormalizeAngle(left1);
-                right = NormalizeAngle(right1);
+                left = MathHelper.NormalizeAngle(left1);
+                right = MathHelper.NormalizeAngle(right1);
 
                 // Console.WriteLine($"Obj location = [ {l} ], shipLocation = {shipLocation}, relative [ {p} ] ");
                 //Console.WriteLine($"Obj relative to ship angle = [ {center.Angle} = {MathHelper.ToDegrees(center.Angle)} ], obj dist = {center.Distance}");
@@ -107,7 +109,7 @@ namespace Asteroids.Standard
             try
             {
                 var polarPoint = TransformDecartToPolar(ship.GetCurrentLocation(), point);
-                polarPoint.Angle = NormalizeAngle(polarPoint.Angle - ship.GetRadians());
+                polarPoint.Angle = MathHelper.NormalizeAngle(polarPoint.Angle - ship.GetRadians());
                 return polarPoint;
             }
             catch (Exception ex)
@@ -131,14 +133,5 @@ namespace Asteroids.Standard
             }
         }
 
-
-        public static double NormalizeAngle(double angle)
-        {
-            while (angle < -Math.PI)
-                angle += 2 * Math.PI;
-            while (angle > Math.PI)
-                angle -= 2 * Math.PI;
-            return angle;   
-        }
     }
 }

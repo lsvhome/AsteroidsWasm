@@ -101,9 +101,114 @@ namespace Asteroids.Standard
                     return;
                 }
 
+
+                bool allowFireForShape = false;
                 if (Target != null)
                 {
-                    var shipRotationSpeedFactor = (int)ScreenCanvas.FramesPerSecond / 5;
+                    var diff = Target.CenterRelativeLocationPolar(_ship).Angle;
+                    var diffPolarPredict = TargetPredictionPolarRelative(Target);
+                    
+                    //if (Target.Velocity.HasValue)
+                    {
+                        diff = TragetPredictedAngleToShipDiff(Target);
+                    }
+                    double targetCenterAngleDegrees = Math.Abs(MathHelper.ToDegrees(diff));
+
+
+ 
+                    
+                    // for dots (like misiles)
+                    allowFire |= diffPolarPredict.Distance <= Target.Distance && Target.LeftRelativeToCenterAngle == Target.RightRelativeToCenterAngle && Math.Abs(Target.RightRelativeToCenterAngle) <= 0.03;
+
+
+                    // for shapes
+                    allowFireForShape =   
+                    (
+                        diffPolarPredict.Distance <= Target.Distance && 
+                        Math.Abs(diff) < 0.01 
+                        //Target.LeftRelativeToCenterAngle + diff < 0.1 && Target.RightRelativeToCenterAngle + diff > -0.1
+
+                        //&& Math.Abs(Target.CenterCoordinates.Angle + diff) < Math.Abs(Target.LeftAngle)
+                        //&& Math.Abs(Target.CenterCoordinates.Angle + diff) < Math.Abs(Target.RightAngle)
+                        && Target.Distance < shipDirectionVectorLenght
+                    );
+                    
+                    allowFire |= allowFireForShape;
+
+
+                   // if (allowFire)
+                    Console.WriteLine($"allowFire = {allowFire} {diff} {Target.LeftRelativeToCenterAngle + diff} = {Target.RightRelativeToCenterAngle + diff}, {Target.Distance}");
+
+  /*                  
+                    allowFire |= staticView.Any(t=> {
+                        var diff = TragetPredictedAngleToShipDiff(t);
+                        var diffPolarPredict = TargetPredictionPolarRelative(Target);
+                        //var diff = t.CenterRelativeLocationPolar(_ship).Angle;
+                        var ret = (
+                            diffPolarPredict.Distance <= t.Distance && 
+                            
+                            t.LeftRelativeToCenterAngle + diff < 0.1 && t.RightRelativeToCenterAngle + diff > -0.1
+
+                                                                     //&& (Math.Abs(t.CenterCoordinates.Angle + diff) < Math.Abs(t.LeftAngle + diff)
+                                                                     //|| Math.Abs(t.CenterCoordinates.Angle + diff) < Math.Abs(t.RightAngle + diff)
+                                                                     //)
+                                                                     && t.Distance < shipDirectionVectorLenght
+                        );
+
+                        if (ret)
+                        {
+                            
+                        }
+
+                        return ret;
+                    });
+*/
+                }
+                
+                if (allowFire && _ship?.IsAlive == true)
+                {
+                    if (allowFireForShape)
+                    {
+                        var t = TargetPredictionDecartAbsolute(Target);
+                        Vectors.Add(t);
+                    }
+                    // Console.WriteLine($"Target angle = [ {MathHelper.ToDegrees(target.CenterCoordinates.Angle)} ], Distance = {target.CenterCoordinates.Distance}, L [{MathHelper.ToDegrees(target.LeftAngle)}] R[{MathHelper.ToDegrees(target.RightAngle)}]");
+                    // Fire bullets that are not already moving
+                    foreach (var bullet in _env._cache.GetBulletsAvailable())
+                    {
+                        bullet.ScreenObject.Shoot(_ship);
+
+                        //_ship._game.Pause();
+                        return;
+                    }
+                }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+
+
+
+
+
+
+
+
+
+
+
+                if (Target != null)
+                {
                     var diff = Target.CenterRelativeLocationPolar(_ship).Angle;
                     //if (Target.Velocity.HasValue)
                     {
@@ -112,9 +217,14 @@ namespace Asteroids.Standard
                     double targetCenterAngleDegrees = Math.Abs(MathHelper.ToDegrees(diff));
 
 
-                    var shipRotationSpeed = shipRotationSpeedFactor * targetCenterAngleDegrees;
+
 
                     var targetDeltaDegreesForSmallRotationSpeed = 5;
+                    var shipRotationSpeedFactor = (int)ScreenCanvas.FramesPerSecond /
+                                                  (Math.Abs(targetCenterAngleDegrees -
+                                                            targetDeltaDegreesForSmallRotationSpeed));
+                    var shipRotationSpeed = shipRotationSpeedFactor * targetCenterAngleDegrees;
+
                     if (targetCenterAngleDegrees >= targetDeltaDegreesForSmallRotationSpeed)
                     {
                         shipRotationSpeed = Ship.RotateSpeed;
@@ -139,49 +249,21 @@ namespace Asteroids.Standard
                         {
                         }
                     }
-                    
-                    // for dots (like misiles)
-                    allowFire |= Target.LeftRelativeToCenterAngle == Target.RightRelativeToCenterAngle && Math.Abs(Target.RightRelativeToCenterAngle) <= 0.03;
 
-                    // for shapes
-                    allowFire |= (
-                        Target.LeftRelativeToCenterAngle + diff < 0.1 && Target.RightRelativeToCenterAngle + diff > -0.1
-
-                                                                      //&& Math.Abs(Target.CenterCoordinates.Angle + diff) < Math.Abs(Target.LeftAngle)
-                                                                      //&& Math.Abs(Target.CenterCoordinates.Angle + diff) < Math.Abs(Target.RightAngle)
-                                                                      && Target.Distance < shipDirectionVectorLenght
-                    );
-
-                    Console.WriteLine($"allowFire = {Target.LeftRelativeToCenterAngle + diff} = {Target.RightRelativeToCenterAngle + diff}, {Target.Distance}");
 
                 }
 
-                
 
-                allowFire |= staticView.Any(t=> {
-                    var diff = TragetPredictedAngleToShipDiff(t);
-                    //var diff = t.CenterRelativeLocationPolar(_ship).Angle;
-                    var ret = (
-                    t.LeftRelativeToCenterAngle + diff < 0.1 && t.RightRelativeToCenterAngle + diff > -0.1
 
-                    //&& (Math.Abs(t.CenterCoordinates.Angle + diff) < Math.Abs(t.LeftAngle + diff)
-                    //|| Math.Abs(t.CenterCoordinates.Angle + diff) < Math.Abs(t.RightAngle + diff)
-                    //)
-                    && t.Distance < shipDirectionVectorLenght
-                    );
-                    return ret;
-                });
-                
-                if (allowFire && _ship?.IsAlive == true)
-                {
-                    // Console.WriteLine($"Target angle = [ {MathHelper.ToDegrees(target.CenterCoordinates.Angle)} ], Distance = {target.CenterCoordinates.Distance}, L [{MathHelper.ToDegrees(target.LeftAngle)}] R[{MathHelper.ToDegrees(target.RightAngle)}]");
-                    // Fire bullets that are not already moving
-                    foreach (var bullet in _env._cache.GetBulletsAvailable())
-                    {
-                        bullet.ScreenObject.Shoot(_ship);
-                        return;
-                    }
-                }
+
+
+
+
+
+
+
+
+
             }
             catch (Exception ex)
             {
@@ -190,8 +272,6 @@ namespace Asteroids.Standard
         }
 
         #region IDrawableObject
-
-        public IList<PointD> Dots => new List<PointD>();
 
         private int shipDirectionVectorLenght = 5900;
 
@@ -455,6 +535,7 @@ namespace Asteroids.Standard
             }
         }
 
+        public IList<PointD> Dots => new List<PointD>();
 
 
         public IList<IVectorD> Vectors

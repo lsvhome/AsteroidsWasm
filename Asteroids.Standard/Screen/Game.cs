@@ -55,7 +55,7 @@ namespace Asteroids.Standard.Screen
                 , Enumerable.Range(0, 4).Select(i => new Bullet()).ToList()
             );
 
-            var ship = new Ship();
+            var ship = new Ship(this);
             _cache.UpdateShip(ship);
 
             _collisionManager = new CollisionManager(_cache);
@@ -126,7 +126,7 @@ namespace Asteroids.Standard.Screen
                     else if (_collisionManager.IsCenterSafe())
                     {
                         _score.DecrementReserveShips();
-                        _cache.UpdateShip(new Ship());
+                        _cache.UpdateShip(new Ship(this));
                     }
                 }
 
@@ -303,7 +303,7 @@ namespace Asteroids.Standard.Screen
             else if (_cache.ExplosionCount() == 0 && _score.HasReserveShips())
             {
                 _score.DecrementReserveShips();
-                _cache.UpdateShip(new Ship());
+                _cache.UpdateShip(new Ship(this));
             }
         }
 
