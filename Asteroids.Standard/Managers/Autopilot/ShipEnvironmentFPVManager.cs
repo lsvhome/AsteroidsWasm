@@ -50,7 +50,7 @@ namespace Asteroids.Standard
                     var allpoints = _cache.Saucer.GetPoints();
                     var half = allpoints.Select(p => Math.Max(Math.Abs(p.X- _cache.Saucer.GetCurrentLocation().X), Math.Abs(p.Y- _cache.Saucer.GetCurrentLocation().Y))).Max();
                     objLoc.Distance = objLoc.CenterCoordinates.Distance - half;
-                    objLoc.Velocity = new PointF((float)obj.GetVelocityX(), (float)obj.GetVelocityY());
+                    objLoc.Velocity = new PointD { X = obj.GetVelocityX(), Y = obj.GetVelocityY() };
                     ret.Add(objLoc);
                 }
 
@@ -61,7 +61,7 @@ namespace Asteroids.Standard
                     var objLoc = TransformViewToFPV(obj.ScreenObject, _cache.Ship);
                     objLoc.ObjectType = ObjectType.Asteroid;
                     objLoc.Distance = objLoc.CenterCoordinates.Distance - asteroidRadius;
-                    objLoc.Velocity = new PointF((float)obj.ScreenObject.GetVelocityX(), (float)obj.ScreenObject.GetVelocityY());
+                    objLoc.Velocity = new PointD(obj.ScreenObject.GetVelocityX(), obj.ScreenObject.GetVelocityY());
                     ret.Add(objLoc);
                 }
 
@@ -86,8 +86,8 @@ namespace Asteroids.Standard
                 //var p = new Point( l.X - shipLocation.X, l.Y - shipLocation.Y );
 
                 var center = TransformViewToFPV(objLocation, ship);
-                var left = obj.GetPoints().Select(p => TransformDecartToPolar(shipLocation, p).Angle - shipDirectionRadians).Min();
-                var right = obj.GetPoints().Select(p => TransformDecartToPolar(shipLocation, p).Angle - shipDirectionRadians).Max();
+                var left = obj.GetPoints().Select(p => (double)MathHelper.TransformDecartToPolar(new VectorD { Start = shipLocation, End = p }).Angle - shipDirectionRadians).Min();
+                var right = obj.GetPoints().Select(p => (double)MathHelper.TransformDecartToPolar(new VectorD { Start = shipLocation, End = p }).Angle - shipDirectionRadians).Max();
                 var left1 = center.Angle - left;
                 var right1 = right - center.Angle;
                 left = MathHelper.NormalizeAngle(left1);
@@ -108,8 +108,10 @@ namespace Asteroids.Standard
         {
             try
             {
-                var polarPoint = TransformDecartToPolar(ship.GetCurrentLocation(), point);
-                polarPoint.Angle = MathHelper.NormalizeAngle(polarPoint.Angle - ship.GetRadians());
+                var v = new VectorD { Start = ship.GetCurrentLocation(), End = point };
+                var polarPoint = MathHelper.TransformDecartToPolar(v);
+                var sr = ship.GetRadians();
+                polarPoint.Angle = MathHelper.NormalizeAngle(polarPoint.Angle - sr);
                 return polarPoint;
             }
             catch (Exception ex)
@@ -118,20 +120,5 @@ namespace Asteroids.Standard
                 throw;
             }
         }
-        
-        internal PolarCoordinates TransformDecartToPolar(Point observer, Point target)
-        {
-            try
-            {
-                Point relativeLocation = new Point(target.X - observer.X, target.Y - observer.Y);
-                return MathHelper.TransformDecartToPolar(relativeLocation);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                throw;
-            }
-        }
-
     }
 }

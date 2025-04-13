@@ -283,12 +283,18 @@ namespace Asteroids.Standard
             if (_rightPressed)
                 _game.Right();
 
+
+            _game.Thrust(_upPressed);
+            _game.DoGameMovements();
+
+
             if (_APressed)
             {
                 _game.DoAutoPilot();
             }
 
-            _game.Thrust(_upPressed);
+            _game.ApplyShipMovements();
+
             _game.DrawScreen();
 
             // If the game is over, display the title screen

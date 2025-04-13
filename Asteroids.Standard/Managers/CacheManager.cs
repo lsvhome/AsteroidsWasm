@@ -291,7 +291,9 @@ namespace Asteroids.Standard.Managers
         public IList<CachedObject<Bullet>> GetBulletsInFlight()
         {
             lock (_bulletLock)
+            {
                 return _bulletsInFlight.ToList();
+            }
         }
 
         /// <summary>
@@ -362,19 +364,25 @@ namespace Asteroids.Standard.Managers
                 ret.Add(Saucer);
             }
 
-            if (_bulletsInFlight != null)
+            lock (_bulletLock)
             {
-                foreach (var bullet in _bulletsInFlight)
+                if (_bulletsInFlight != null)
                 {
-                    ret.Add(bullet.ScreenObject);
+                    foreach (var bullet in _bulletsInFlight)
+                    {
+                        ret.Add(bullet.ScreenObject);
+                    }
                 }
             }
 
-            if (_asteroids != null)
+            lock (_asteroidsLock)
             {
-                foreach (var asteroid in _asteroids)
+                if (_asteroids != null)
                 {
-                    ret.Add(asteroid.ScreenObject);
+                    foreach (var asteroid in _asteroids)
+                    {
+                        ret.Add(asteroid.ScreenObject);
+                    }
                 }
             }
 

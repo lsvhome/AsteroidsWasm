@@ -12,6 +12,9 @@ namespace Asteroids.Standard
             RightRelativeToCenterAngle = MathHelper.NormalizeAngle(centerCoordinates.Angle + relativeRightAngle);
         }
 
+        /// <summary>
+        /// Location of target from ship FPV
+        /// </summary>
         public PolarCoordinates CenterCoordinates { get; set; }
         public double LeftRelativeToCenterAngle { get; set; }
         public double RightRelativeToCenterAngle { get; set; }
@@ -19,7 +22,8 @@ namespace Asteroids.Standard
         public ObjectType ObjectType { get; set; }
         public double Distance { get; set; }
 
-        public PointF? Velocity { get; set; }
+        public Point? Velocity { get; set; }
+        public PolarCoordinates VelocityP => MathHelper.TransformDecartToPolar(this.Velocity ?? new Point(0, 0));
 
         public double GetAbsoluteAngle(Ship ship)
         {
@@ -32,7 +36,7 @@ namespace Asteroids.Standard
         public PolarCoordinates CenterRelativeLocationPolar(Ship ship)
         {
             return new PolarCoordinates
-                { Angle = ship.GetRadians() + this.CenterCoordinates.Angle, Distance = this.CenterCoordinates.Distance };
+                { Angle = MathHelper.NormalizeAngle( ship.GetRadians() + this.CenterCoordinates.Angle), Distance = this.CenterCoordinates.Distance };
         }
 
         /// <summary>

@@ -286,6 +286,9 @@ namespace Asteroids.Standard.Managers
                     _screenCanvas.AddLineTo(new Point(newLeft, bottomSide));
                     _screenCanvas.AddLineTo(new Point(rightSide, bottomSide));
                     break;
+                case '-':
+                    _screenCanvas.AddLine(new Point(newLeft, halfDown), new Point(rightSide, halfDown));
+                    break;
             }
         }
     }

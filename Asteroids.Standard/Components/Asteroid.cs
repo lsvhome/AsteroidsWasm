@@ -27,10 +27,11 @@ namespace Asteroids.Standard.Components
             Size = size;
 
             // Can't place the object randomly in constructor - stinky
-            CurrentLocation.X = RandomizeHelper.Random.Next(2) * (ScreenCanvas.CanvasWidth - 1);
+            CurrentLocation.X = RandomizeHelper.Random.Next(100, ScreenCanvas.CanvasWidth - 100)  ;
             //CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight - 1);
 
-            CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight*3/4, ScreenCanvas.CanvasHeight - 100);
+            //CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight*3/4, ScreenCanvas.CanvasHeight - 100);
+            CurrentLocation.Y = RandomizeHelper.Random.Next(100, ScreenCanvas.CanvasHeight/2 - 200);
             RandomVelocity();
             InitPoints();
         }
@@ -62,8 +63,10 @@ namespace Asteroids.Standard.Components
             _rotateSpeed = (RandomizeHelper.Random.Next(10000) - 5000) / fps;
 
             // choose a velocity for the asteroid (smaller asteroids can go faster)
-            VelocityX = (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
-            VelocityY = 0;//(RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
+            //VelocityX = 3 * (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
+            VelocityY = (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
+            VelocityX = 1000 / fps;// 1000 / fps;
+            VelocityY = 1000 / fps;
         }
 
         /// <summary>

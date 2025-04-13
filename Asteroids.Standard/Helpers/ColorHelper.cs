@@ -22,6 +22,7 @@ namespace Asteroids.Standard.Helpers
                 [DrawColor.Yellow] = Color.Yellow.ToHexString(),
                 [DrawColor.Orange] = Color.Orange.ToHexString(),
                 [DrawColor.Blue] = Color.Blue.ToHexString(),
+                [DrawColor.Gray] = Color.Gray.ToHexString(),
             }
         );
 

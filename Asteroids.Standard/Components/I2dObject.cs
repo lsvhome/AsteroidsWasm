@@ -13,6 +13,13 @@ namespace Asteroids.Standard.Components
         public PointD()
         {
         }
+
+        public PointD(double x, double y, DrawColor Color = DrawColor.White)
+        {
+            this.X = x;
+            this.Y = y;
+        }
+
         public PointD(PolarCoordinates data)
         {
             var t = MathHelper.TransformPolarToDecart(data);
@@ -33,6 +40,11 @@ namespace Asteroids.Standard.Components
         {
             var ret = MathHelper.TransformDecartToPolar(this);
             return ret;
+        }
+
+        public override string ToString()
+        {
+            return $"[X={X};Y={Y}]";
         }
     }
 

@@ -21,7 +21,7 @@ namespace Asteroids.Standard.Screen
         private const int PauseInterval = (int)ScreenCanvas.FramesPerSecond;
 
         private readonly ScoreManager _score;
-        private readonly TextManager _textDraw;
+        public TextManager _textDraw { get; private set; }
 
         private readonly CacheManager _cache;
         private readonly CollisionManager _collisionManager;
@@ -87,30 +87,11 @@ namespace Asteroids.Standard.Screen
             _paused = !_paused;
         }
 
-        /// <summary>
-        /// Main game-play routine to determine object state and screen refresh.
-        /// </summary>
-        public void DrawScreen()
+        public void ApplyShipMovements()
         {
-            if (_paused)
+            if (!_paused)
             {
-                // Pause flashes on and off
-                if (_pauseTimer > PauseInterval / 2)
-                {
-                    _textDraw.DrawText(
-                        "PAUSE"
-                        , TextManager.Justify.Center
-                        , ScreenCanvas.CanvasHeight / 3
-                        , 200, 400
-                    );
-                }
-
-                if (--_pauseTimer < 0)
-                    _pauseTimer = PauseInterval;
-            }
-            else // Do all game processing if game is not paused
-            {
-                var origScore = _score.CurrentScore;
+                //var origScore = _score.CurrentScore;
 
                 // If no ship displaying, after explosions are done
                 // get a new one - or end the game
@@ -130,12 +111,61 @@ namespace Asteroids.Standard.Screen
                     }
                 }
 
-                // Create a new asteroid belt if no explosions and no asteroids
-                if (noExplosions && _cache.Belt.Count() == 0)
-                    _cache.UpdateBelt(new AsteroidBelt(++_currentLevel));
+                // Move all objects starting with the ship
+                _cache.Ship?.Move();
+            }
+        }
+        /// <summary>
+        /// Main game-play routine to determine object state and screen refresh.
+        /// </summary>
+        public void DoGameMovements()
+        {
+            if (_paused)
+            {
+                // Pause flashes on and off
+                if (_pauseTimer > PauseInterval / 2)
+                {
+                    _textDraw.DrawText(
+                        "PAUSE"
+                        , TextManager.Justify.Center
+                        , ScreenCanvas.CanvasHeight / 3
+                        , 200, 400
+                    );
+                }
+
+                if (--_pauseTimer < 0)
+                    _pauseTimer = PauseInterval;
+            }
+            else // Do all game processing if game is not paused
+            {
+
+                var origScore = _score.CurrentScore;
+                var noExplosions = _cache.ExplosionCount() == 0;
+                /*
+                // If no ship displaying, after explosions are done
+                // get a new one - or end the game
+
+                if (_cache.Ship?.IsAlive != true && noExplosions)
+                {
+                    if (!_score.HasReserveShips())
+                    {
+                        // Game over
+                        _inProcess = false;
+                    }
+                    else if (_collisionManager.IsCenterSafe())
+                    {
+                        _score.DecrementReserveShips();
+                        _cache.UpdateShip(new Ship(this));
+                    }
+                }
 
                 // Move all objects starting with the ship
                 _cache.Ship?.Move();
+                */
+
+                // Create a new asteroid belt if no explosions and no asteroids
+                if (noExplosions && _cache.Belt.Count() == 0)
+                    _cache.UpdateBelt(new AsteroidBelt(++_currentLevel));
 
                 //Move the saucer and its missile
                 if (_cache.Saucer != null)
@@ -213,6 +243,11 @@ namespace Asteroids.Standard.Screen
                 }
             }
 
+
+        }
+
+        public void DrawScreen()
+        {
             //Commit the changes
             _cache.Repopulate();
 
@@ -296,7 +331,7 @@ namespace Asteroids.Standard.Screen
                 foreach (var bullet in _cache.GetBulletsAvailable())
                 {
                     bullet.ScreenObject.Shoot(_cache.Ship);
-                    PlaySound(this, ActionSound.Fire);
+                    Sounds.ActionSounds.PlaySound(this, ActionSound.Fire);
                     return;
                 }
             }

@@ -15,15 +15,16 @@ namespace Asteroids.Standard.Components
     internal sealed class Ship : ScreenObjectBase, IDrawableObject
     {
         internal const double RotateSpeed = 12000 / ScreenCanvas.FramesPerSecond;
-
+        public Game Game { get; private set; }
         /// <summary>
         /// Creates and immediately draws an instance of <see cref="Ship"/>.
         /// </summary>
-        public Ship() : base(new Point(ScreenCanvas.CanvasWidth / 2, ScreenCanvas.CanvasHeight / 2))
+        public Ship(Game game) : base(new Point(ScreenCanvas.CanvasWidth / 2, ScreenCanvas.CanvasHeight / 2))
         {
             IsThrustOn = false;
             ExplosionLength = 2;
             InitPoints();
+            Game = game;
         }
 
         public ShipAutoPilot? AutoPilot { get; set; }
@@ -111,6 +112,8 @@ namespace Asteroids.Standard.Components
             PlaySound(this, ActionSound.Thrust);
         }
 
+
+        public double LastRotationSpeedDegrees { get; private set; } = 0;
         protected internal override void Rotate(double degrees)
         {
             if (Math.Abs(degrees) > Math.Abs(RotateSpeed))
@@ -118,6 +121,7 @@ namespace Asteroids.Standard.Components
                 degrees = RotateSpeed;
             }
 
+            LastRotationSpeedDegrees = degrees;
             base.Rotate(degrees);
         }
 
@@ -183,13 +187,36 @@ namespace Asteroids.Standard.Components
 
         #endregion
 
+        public const int ShipDirectionVectorLenght = 5900;
+
+        private VectorD ShipDirectionVector
+        {
+            get
+            {
+                var cl = (PointD)this.GetCurrentLocation();
+                var r = this.GetRadians();
+                var dv = MathHelper.TransformPolarToDecart(new PolarCoordinates { Angle = -this.GetRadians(), Distance = ShipDirectionVectorLenght });
+
+                var end = cl + dv;
+                var v = new VectorD
+                {
+                    Start = cl,
+                    End = end,
+                    Color = DrawColor.Red
+                };
+
+                //Console.WriteLine($"Ship direction vector: {dx} {dy} ; r = {r}={MathHelper.ToDegrees(r)}:= {MathHelper.NormalizeAngle(r)}={MathHelper.ToDegrees(MathHelper.NormalizeAngle(r))}");
+                return v;
+                //return TargetPredictionVector ?? v;
+            }
+        }
 
 
         #region IDrawableObject
 
         public IList<PointD> Dots => new List<PointD>();
 
-        public IList<IVectorD> Vectors => new List<IVectorD>();
+        public IList<IVectorD> Vectors => new List<IVectorD> { ShipDirectionVector };
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
 

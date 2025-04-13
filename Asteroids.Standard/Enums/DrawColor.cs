@@ -10,5 +10,6 @@
         Yellow,
         Orange,
         Blue,
+        Gray,
     }
 }

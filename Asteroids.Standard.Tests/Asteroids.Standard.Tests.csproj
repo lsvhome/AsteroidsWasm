@@ -1,0 +1,16 @@
+<Project Sdk="MSTest.Sdk/3.6.4">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>13</LangVersion>
+    <!--<ImplicitUsings>enable</ImplicitUsings>-->
+    <Nullable>disable</Nullable>
+    <UseVSTest>true</UseVSTest>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Asteroids.Standard\Asteroids.Standard.csproj" />
+  </ItemGroup>
+
+</Project>
