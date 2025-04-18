@@ -27,6 +27,7 @@ namespace Asteroids.Standard.Components
 
             //templates are drawn nose "up"
             Radians = 180 * ScreenCanvas.RadiansPerDegree;
+            Radians = 0;
 
             _points = new List<Point>();
             PointsTransformed = new List<Point>();
@@ -150,12 +151,12 @@ namespace Asteroids.Standard.Components
         /// <summary>
         /// Get the current rotational radians.
         /// </summary>
-        public double GetRadians() => Radians;
+        public Angle GetRadians() => Radians;
 
         /// <summary>
         /// Current rotation.
         /// </summary>
-        protected double Radians;
+        protected Angle Radians;
 
         /// <summary>
         /// Rotates all internal <see cref="Point"/>s used to generate polygons on draw
@@ -164,8 +165,12 @@ namespace Asteroids.Standard.Components
         /// <param name="alignPoint"><see cref="Point"/> to target.</param>
         protected void Align(Point alignPoint)
         {
-            var radsToPoint = GeometryHelper.GetAngle(CurrentLocation, alignPoint);
-            var delta = radsToPoint - Radians;
+            var t = MathHelper.TransformDecartToPolar(new VectorD { Start = CurrentLocation, End = alignPoint });
+            //var radsToPoint = GeometryHelper.GetAngle(CurrentLocation, alignPoint);
+            //if (radsToPoint != t.Angle)
+            //{ 
+            //}
+            var delta = t.Angle - Radians;
 
             Radians += delta >= 0
                 ? Math.Min(delta, RotationLimit)
@@ -194,13 +199,15 @@ namespace Asteroids.Standard.Components
         /// </summary>
         private void RotateInternal()
         {
-            Radians %= ScreenCanvas.RadiansPerCircle;
-
-            var sinVal = Math.Sin(Radians);
-            var cosVal = Math.Cos(Radians);
+            Radians = Radians  % ScreenCanvas.RadiansPerCircle;
+            var radians = Radians;
+            Angle r = Radians;
+            var sinVal = Math.Sin(radians);
+            var cosVal = Math.Cos(radians);
 
             //Get points with some thread safety
             var newPointsTransformed = new List<Point>();
+            var newPointsTransformed2 = new List<Point>();
 
             var points = new List<Point>();
             lock (_updatePointsLock)
@@ -208,11 +215,22 @@ namespace Asteroids.Standard.Components
 
             //Re-transform the points
             var ptTransformed = new Point(0, 0);
+            var ptTransformed2 = new Point(0, 0);
             foreach (var pt in points)
             {
-                ptTransformed.X = (int)(pt.X * cosVal + pt.Y * sinVal);
-                ptTransformed.Y = (int)(pt.X * sinVal - pt.Y * cosVal);
+                ptTransformed.X = (int)(pt.X * cosVal - pt.Y * sinVal);
+//#warning #error here
+                ptTransformed.Y = (int)(pt.X * sinVal + pt.Y * cosVal);
+
+                ptTransformed2 = RotateInternal(radians, pt);
                 newPointsTransformed.Add(ptTransformed);
+                newPointsTransformed2.Add(ptTransformed2);
+                if (ptTransformed.X != ptTransformed2.X)
+                { 
+                }
+                if (ptTransformed.Y != ptTransformed2.Y)
+                {
+                }
             }
 
             //Add the points
@@ -222,6 +240,11 @@ namespace Asteroids.Standard.Components
                 foreach (var pt in newPointsTransformed)
                     PointsTransformed.Add(pt);
             }
+        }
+        
+        private Point RotateInternal(double Radians, Point pt)
+        {
+            return MathHelper.RotateInternal(Radians, pt);
         }
 
         #endregion

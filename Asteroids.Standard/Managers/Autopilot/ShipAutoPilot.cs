@@ -1,4 +1,5 @@
-﻿using Asteroids.Standard.Components;
+﻿#nullable disable
+using Asteroids.Standard.Components;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Managers;
 using Asteroids.Standard.Screen;
@@ -25,7 +26,7 @@ namespace Asteroids.Standard
         /// <summary>
         /// Target relative location regarding to ship (ship FPV).
         /// </summary>
-        internal ShipEnvironmentObjectLocation? Target { get; private set; }
+        internal ShipEnvironmentObjectLocation Target { get; private set; }
 
 
         TriangleInfo TargetPredictionTriangleInfo(ShipEnvironmentObjectLocation target)
@@ -162,7 +163,7 @@ namespace Asteroids.Standard
                 bool allowFireForShape = false;
 
 
-                if (Target != null && false)
+                if (Target != null /*&& false*/)
                 {
 
                     TriangleInfo triangle = TargetPredictionTriangleInfo(Target);
@@ -176,15 +177,16 @@ namespace Asteroids.Standard
 
 
                     _ship.Game._textDraw.DrawText(
-                        $" Ship=[{(Angle)_ship.GetRadians()}] targetAngle=[{targetAngle}] diff={diff}"
+                        $" Ship=[{(int )_ship.GetRadians().ValueDegee}] targetAngle=[{(int)targetAngle.ValueDegee}] diff={(int)diff.ValueDegee}"
                         //$"T {target.Velocity}, {Target.VelocityP}"
                         , TextManager.Justify.Center
                         , ScreenCanvas.CanvasHeight / 3 * 2
                         , 100, 200
                     );
 
+                    Console.WriteLine($"allowFire = {allowFire} {diff} {Target.LeftRelativeToCenterAngle + diff} = {Target.RightRelativeToCenterAngle + diff}, {Target.Distance}");
 
-
+                    /*
 
                     double targetCenterAngleDegrees = Math.Abs(MathHelper.ToDegrees(diff));
 
@@ -254,33 +256,34 @@ namespace Asteroids.Standard
 
                    // if (allowFire)
                     Console.WriteLine($"allowFire = {allowFire} {diff} {Target.LeftRelativeToCenterAngle + diff} = {Target.RightRelativeToCenterAngle + diff}, {Target.Distance}");
+                    */
 
-  /*                  
-                    allowFire |= staticView.Any(t=> {
-                        var diff = TragetPredictedAngleToShipDiff(t);
-                        var diffPolarPredict = TargetPredictionPolarRelative(Target);
-                        //var diff = t.CenterRelativeLocationPolar(_ship).Angle;
-                        var ret = (
-                            diffPolarPredict.Distance <= t.Distance && 
-                            
-                            t.LeftRelativeToCenterAngle + diff < 0.1 && t.RightRelativeToCenterAngle + diff > -0.1
+                    /*                  
+                                      allowFire |= staticView.Any(t=> {
+                                          var diff = TragetPredictedAngleToShipDiff(t);
+                                          var diffPolarPredict = TargetPredictionPolarRelative(Target);
+                                          //var diff = t.CenterRelativeLocationPolar(_ship).Angle;
+                                          var ret = (
+                                              diffPolarPredict.Distance <= t.Distance && 
 
-                                                                     //&& (Math.Abs(t.CenterCoordinates.Angle + diff) < Math.Abs(t.LeftAngle + diff)
-                                                                     //|| Math.Abs(t.CenterCoordinates.Angle + diff) < Math.Abs(t.RightAngle + diff)
-                                                                     //)
-                                                                     && t.Distance < shipDirectionVectorLenght
-                        );
+                                              t.LeftRelativeToCenterAngle + diff < 0.1 && t.RightRelativeToCenterAngle + diff > -0.1
 
-                        if (ret)
-                        {
-                            
-                        }
+                                                                                       //&& (Math.Abs(t.CenterCoordinates.Angle + diff) < Math.Abs(t.LeftAngle + diff)
+                                                                                       //|| Math.Abs(t.CenterCoordinates.Angle + diff) < Math.Abs(t.RightAngle + diff)
+                                                                                       //)
+                                                                                       && t.Distance < shipDirectionVectorLenght
+                                          );
 
-                        return ret;
-                    });
-*/
+                                          if (ret)
+                                          {
+
+                                          }
+
+                                          return ret;
+                                      });
+                  */
                 }
-                
+
                 if (allowFire && _ship?.IsAlive == true)
                 {
                     if (allowFireForShape)
@@ -447,6 +450,29 @@ namespace Asteroids.Standard
         {
             get
             {
+
+                if (Target != null)
+                {
+
+                    TriangleInfo triangle = TargetPredictionTriangleInfo(Target);
+
+                    var targetAngle = (triangle.C - triangle.A).GetPolarCoordinates().Angle;
+                    var diff = Target.CenterRelativeLocationPolar(_ship).Angle;
+                    //if (Target.Velocity.HasValue)
+                    {
+                        diff = TragetPredictedAngleToShipDiff(Target);
+                    }
+
+
+                    _ship.Game._textDraw.DrawText(
+                        $" SHIP=[{(Angle)_ship.GetRadians()}] TARGETANGLE=[{targetAngle}] DIFF=[{diff}]"
+                        //$"T {target.Velocity}, {Target.VelocityP}"
+                        , TextManager.Justify.Center
+                        , ScreenCanvas.CanvasHeight / 3 * 2
+                        , 100, 200
+                    );
+                }
+
                 var ret = new List<IPoligonD> { TargetPolygon };
                 //if (TargetPredictionPolygon != null)
                 //{
@@ -462,3 +488,4 @@ namespace Asteroids.Standard
         #endregion IDrawableObject
     }
 }
+#nullable restore

@@ -174,14 +174,18 @@ namespace Asteroids.Standard.Components
                 ));
             });
 
-            for (var i = 0; i < 9; i++)
+            //int k = 9;
+            int k = 4;
+
+            for (var i = 0; i < k; i++)
             {
-                var radPt = i * (360 / 9) * (Math.PI / 180);
+                var radPt = i * (360 / k) * (Math.PI / 180);
                 addPoint(PointsTemplateDne, radPt, AsteroidSize.Dne);
                 addPoint(PointsTemplateSmall, radPt, AsteroidSize.Small);
                 addPoint(PointsTemplateMedium, radPt, AsteroidSize.Medium);
                 addPoint(PointsTemplateLarge, radPt, AsteroidSize.Large);
             }
+
         }
 
         #endregion
@@ -194,7 +198,7 @@ namespace Asteroids.Standard.Components
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
 
-        public IList<Text> Texts => new List<Text>();
+        public IList<Text> Texts => new List<Text> { new Text { TextVal = ((int)MathHelper.ToDegrees(Radians)).ToString(),  Start = CurrentLocation, Color = DrawColor.Orange } };
 
         #endregion IDrawableObject
     }

@@ -62,12 +62,6 @@ namespace Asteroids.Standard.Managers
             {
                 DrawIDrawableObjects(obj);
             }
-
-            //DrawShip();
-            //DrawSaucer();
-            //DrawBullets();
-            //DrawBelt();
-            //DrawExplosions();
         }
 
         private void DrawIDrawableObjects(IDrawableObject obj)
@@ -89,135 +83,24 @@ namespace Asteroids.Standard.Managers
                 {
                     DrawDot(new Point((int)pointD.X, (int)pointD.Y), pointD.Color);
                 }
+
+
+                foreach (var txt in obj.Texts)
+                {
+                    _cache.Ship.Game._textDraw.DrawText(
+                        txt.TextVal
+                        , TextManager.Justify.Center
+                        , (int)txt.Start.Y
+                        , 50, 100
+                    );
+                }
+
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
-
-
-        /// <summary>
-        /// Draw Ship.
-        /// </summary>
-        private void DrawShip()
-        {
-            if (_cache.Ship?.IsAlive != true)
-                return;
-
-            DrawPolygon(_cache.ShipPoints);
-
-            //Draw flame if thrust is on
-            if (_cache.Ship.IsThrustOn && _cache.ShipPoints != null)
-            {
-                // We have points transformed so we know where the bottom of the ship is
-                var thrustPoints = new List<Point>
-                {
-                    Capacity = 3
-                };
-
-                var pt1 = _cache.ShipPoints[Ship.PointThrust1];
-                var pt2 = _cache.ShipPoints[Ship.PointThrust2];
-
-                thrustPoints.Add(pt1);
-                thrustPoints.Add(pt2);
-
-                // random thrust effect
-                int size = RandomizeHelper.Random.Next(200) + 100;
-                var radians = _cache.Ship.GetRadians();
-
-                thrustPoints.Add(new Point(
-                    (pt1.X + pt2.X) / 2 + (int)(size * Math.Sin(radians)),
-                    (pt1.Y + pt2.Y) / 2 + (int)(-size * Math.Cos(radians))
-                ));
-
-                // Draw thrust directly to ScreenCanvas; it's not part of the object
-                DrawPolygon(thrustPoints, RandomizeHelper.GetRandomFireColor());
-            }
-        }
-
-        /// <summary>
-        /// Draw the Flying Saucer and Missile.
-        /// </summary>
-        private void DrawSaucer()
-        {
-            if (_cache.Saucer?.IsAlive != true)
-                return;
-
-            //Draw the saucer
-            DrawPolygon(_cache.SaucerPoints);
-
-            //Draw its missile
-            if (_cache.Saucer.Missile == null || _cache.MissilePoints?.Any() != true)
-                return;
-
-            DrawPolygon(_cache.MissilePoints);
-
-            //Draw flame for the missile
-            var thrustPoints = new List<Point>
-            {
-                Capacity = 3
-            };
-
-            var pt1 = _cache.MissilePoints[Missile.PointThrust1];
-            var pt2 = _cache.MissilePoints[Missile.PointThrust2];
-
-            thrustPoints.Add(pt1);
-            thrustPoints.Add(pt2);
-
-            // random thrust effect
-            var size = RandomizeHelper.Random.Next(50) + 50;
-            var radians = _cache.Saucer.Missile.GetRadians();
-
-            thrustPoints.Add(new Point(
-                (pt1.X + pt2.X) / 2 + (int)(size * Math.Sin(radians)),
-                (pt1.Y + pt2.Y) / 2 + (int)(-size * Math.Cos(radians))
-            ));
-
-            // Draw thrust directly to ScreenCanvas; it's not part of the object
-            DrawPolygon(thrustPoints, RandomizeHelper.GetRandomFireColor());
-        }
-
-        /// <summary>
-        /// Draw all available Bullets.
-        /// </summary>
-        private void DrawBullets()
-        {
-            foreach (var bullet in _cache.GetBulletsInFlight())
-                DrawPolygon(bullet.PolygonPoints, RandomizeHelper.GetRandomFireColor());
-        }
-
-        /// <summary>
-        /// Draw all asteroids in the belt.
-        /// </summary>
-        private void DrawBelt()
-        {
-            var asteroids = _cache
-                 .GetAsteroids()
-                 .Where(a => a.ScreenObject.Size != Asteroid.AsteroidSize.Dne);
-
-            foreach (var asteroid in asteroids)
-                DrawPolygon(asteroid.PolygonPoints);
-        }
-
-        /// <summary>
-        /// Draw each explosion's progress.
-        /// </summary>
-        private void DrawExplosions()
-        {
-            var explosions = _cache.GetExplosions();
-
-            foreach (var explosion in explosions)
-                DrawExplosion(explosion);
-        }
-
-        /// <summary>
-        /// Draws an explosion to the canvas.
-        /// </summary>
-        private void DrawExplosion(Explosion explosion)
-        {
-            foreach (var point in explosion.Points)
-                DrawVector(new Point(point.X, point.Y), 1, 1, RandomizeHelper.GetRandomFireColor());
         }
 
         #endregion

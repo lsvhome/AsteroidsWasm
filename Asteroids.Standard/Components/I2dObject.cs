@@ -1,4 +1,5 @@
-﻿using Asteroids.Standard.Enums;
+﻿#nullable disable
+using Asteroids.Standard.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,11 +49,11 @@ namespace Asteroids.Standard.Components
         }
     }
 
-    public interface Text
+    public class Text
     {
         public DrawColor Color { get; set; }
-        public PointD Start { get; }
-        public string Text { get; }
+        public PointD Start { get; set; }
+        public string TextVal { get; set; }
     }
 
 
@@ -103,6 +104,7 @@ namespace Asteroids.Standard.Components
 
         public IList<IPoligonD> Poligons { get; }
 
-        // public IList<Text> Texts { get; }
+        public IList<Text> Texts { get; }
     }
 }
+#nullable restore

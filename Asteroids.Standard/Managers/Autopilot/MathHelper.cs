@@ -227,6 +227,20 @@ namespace Asteroids.Standard
             //public bool AngleGammaDirection => (B - C).GetPolarCoordinates().Angle > 0;
 
         }
+
+
+
+        public static PointD RotateInternal(double Radians, PointD pt)
+        {
+            var sinVal = Math.Sin(Radians); // sin 0 = 0 sin 90 = 1
+            var cosVal = Math.Cos(Radians); // cos 0 = 1 sin 90 = 0
+
+            var ret = new PointD(0, 0);
+            ret.X = (pt.X * cosVal - pt.Y * sinVal);
+            ret.Y = (pt.X * sinVal + pt.Y * cosVal);
+
+            return ret;
+        }
     }
 
 #nullable restore

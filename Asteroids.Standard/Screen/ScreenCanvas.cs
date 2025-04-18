@@ -23,6 +23,7 @@ namespace Asteroids.Standard.Screen
         private readonly IList<(Point[], DrawColor)> _points;
         private readonly IList<(Point[], DrawColor)> _polys;
 
+        //private Point _center = new Point ( 3500, 3500 );
         private Point _lastPoint;
         private DrawColor _lastPen;
 

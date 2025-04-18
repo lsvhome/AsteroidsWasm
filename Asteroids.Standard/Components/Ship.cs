@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Helpers;
 using Asteroids.Standard.Screen;
@@ -173,12 +174,12 @@ namespace Asteroids.Standard.Components
             const int shipHeightInUp = (int)(shipHeightHalf * .6);
             const int shipWidthInSide = (int)(shipWidthHalf * .3);
 
-            PointsTemplate.Add(new Point(0, -shipHeightHalf));
+            PointsTemplate.Add(new Point(0, shipHeightHalf));
             PointsTemplate.Add(new Point(shipWidthHalf / 2, 0)); // midpoint for collisions
-            PointsTemplate.Add(new Point(shipWidthHalf, shipHeightHalf));
-            PointsTemplate.Add(new Point(shipWidthInSide, shipHeightInUp));
-            PointsTemplate.Add(new Point(-shipWidthInSide, shipHeightInUp));
-            PointsTemplate.Add(new Point(-shipWidthHalf, shipHeightHalf));
+            PointsTemplate.Add(new Point(shipWidthHalf, -shipHeightHalf));
+            PointsTemplate.Add(new Point(shipWidthInSide, -shipHeightInUp));
+            PointsTemplate.Add(new Point(-shipWidthInSide, -shipHeightInUp));
+            PointsTemplate.Add(new Point(-shipWidthHalf, -shipHeightHalf));
             PointsTemplate.Add(new Point(-shipWidthHalf / 2, 0)); // midpoint for collisions
 
             PointThrust1 = 3;
@@ -216,9 +217,61 @@ namespace Asteroids.Standard.Components
 
         public IList<PointD> Dots => new List<PointD>();
 
-        public IList<IVectorD> Vectors => new List<IVectorD> { ShipDirectionVector };
+        public IList<IVectorD> Vectors => new List<IVectorD> { ShipDirectionVector , new VectorD { Start = new PointD ( 0,0), End = new PointD ( 5000, 5000 ), Color = DrawColor.Blue } };
 
-        public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
+        public IList<IPoligonD> Poligons => new List<IPoligonD> { 
+            
+            new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+
+            new Poligon { Color = DrawColor.Blue, Points = AAA().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+            new Poligon { Color = DrawColor.Blue, Points = BBB().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() }
+            //new Poligon { Color = DrawColor.Blue, Points = CCC().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() }
+
+        };
+
+        IList<Point> AAA()
+        { 
+            int min = 100;
+            int maxX = 10000-min;
+            int maxY = 7500 - min;
+            var ret = new List<Point>();
+            ret.Add(new Point(min, min));
+            ret.Add(new Point(maxX, min));
+            ret.Add(new Point(maxX, maxY));
+            ret.Add(new Point(min, maxY));
+
+            return ret;
+        }
+
+        IList<Point> BBB()
+        {
+            int minX = 3000;
+            int minY = 3000;
+            int maxX = 7000;
+            int maxY = 5000;
+            var ret = new List<Point>();
+            ret.Add(new Point(minX, minY));
+            ret.Add(new Point(maxX, minY));
+            ret.Add(new Point(maxX, maxY));
+            ret.Add(new Point(minX, maxY));
+
+            return ret;
+        }
+
+        //IList<Point> CCC()
+        //{
+        //    PointD c = this.CurrentLocation;
+        //    var ret = new List<Point>();
+        //    const int shipWidthHalf = 500;
+        //    const int shipHeightHalf = shipWidthHalf * 2;
+
+        //    ret.Add(new PointD(0, +shipHeightHalf)+c);
+        //    ret.Add(new PointD(shipWidthHalf, -shipHeightHalf)+c);
+        //    ret.Add(new PointD(-shipWidthHalf, -shipHeightHalf)+c);
+
+
+        //    return ret;
+        //}
 
         public IList<Text> Texts => new List<Text>();
 

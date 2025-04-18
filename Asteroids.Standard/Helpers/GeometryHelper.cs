@@ -91,16 +91,25 @@ namespace Asteroids.Standard.Helpers
         /// </remarks>
         public static double GetAngle(double ax, double ay, double bx, double by, double cx, double cy)
         {
-            // Get the dot product.
-            var dotProduct = DotProduct(ax, ay, bx, by, cx, cy);
+            var triangle = new Asteroids.Standard.MathHelper.TriangleInfo() { A = new Components.PointD(ax, ay), B = new Components.PointD(bx, by), C = new Components.PointD(cx, cy) };
 
-            // Get the cross product.
-            var crossProduct = CrossProductLength(ax, ay, bx, by, cx, cy);
+            //// Get the dot product.
+            //var dotProduct = DotProduct(ax, ay, bx, by, cx, cy);
 
-            // Calculate the angle.
-            return Math.Atan2(crossProduct, dotProduct);
+            //// Get the cross product.
+            //var crossProduct = CrossProductLength(ax, ay, bx, by, cx, cy);
+
+            //// Calculate the angle.
+            //var ret =  Math.Atan2(crossProduct, dotProduct);
+
+            //if (ret != triangle.AngleBeta.Value)
+            //{ 
+            //}
+
+            return triangle.AngleBeta.Value;
         }
         
+        /*
         /// <summary>
         /// Get the angle of line AB from angle 0 assuming a right-angle triangle.
         /// </summary>
@@ -111,17 +120,17 @@ namespace Asteroids.Standard.Helpers
         /// </remarks>
         public static double GetAngle(Point a, Point b)
         {
-            //dot product, cross product from the 0 angle
-            var crossProduct = a.X - b.X;
-            var dotProduct = b.Y - a.Y;
+            var dX = b.X - a.X;
+            var dY = b.Y - a.Y;
 
-            return Math.Atan2(crossProduct, dotProduct);
+            return Math.Atan2(dX, dY);
         }
+        */
 
         #endregion
 
         #region Cross and Dot products
-
+        /*
         /// <summary>
         /// Return the cross product AB x BC.
         /// </summary>
@@ -142,6 +151,7 @@ namespace Asteroids.Standard.Helpers
             return (bAx * bCy - bAy * bCx);
         }
 
+        
         /// <summary>
         /// Return the dot product AB · BC.
         /// </summary>
@@ -159,6 +169,7 @@ namespace Asteroids.Standard.Helpers
             // Calculate the dot product.
             return bAx * bCx + bAy * bCy;
         }
+        */
 
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -150,6 +151,63 @@ namespace Asteroids.Standard.Tests
             Assert.AreEqual(vector.X, actual2.X, 0.00001);
             Assert.AreEqual(vector.Y, actual2.Y, 0.001);
         }
+        
+        //const double b = 1.414;
+        const double b = 0.7071067811865476; // cos(45) = sin(45) = 0.7071067811865476
 
+        [DataTestMethod]
+        [DataRow(0, 0, 1, 0, 1)]
+        [DataRow(180, 0, 1, 0, -1)]
+        [DataRow(90, 0, 1, 1, 0)]
+        [DataRow(-90, 0, 1, -1, 0)]
+
+        [DataRow(45, 0, 1, b, b)]
+        [DataRow(-45, 0, 1, -b, b)]
+
+        [DataRow(135, 0, 1, b, -b)]
+        [DataRow(-135, 0, 1, -b, -b)]
+
+
+        [DataRow(0, 1, 0, 1, 0)]
+        [DataRow(180, 1, 0, -1, 0)]
+        [DataRow(90, 1, 0, 0, -1)]
+        [DataRow(-90, 1, 0, 1, 0)]
+
+        [DataRow(45, 1, 0, b, -b)]
+        [DataRow(-45, 1, 0, b, b)]
+
+        [DataRow(135, 1, 0, -b, -b)]
+        [DataRow(-135, 1, 0, b, -b)]
+
+/*
+        [DataRow(0, 0, -1, 0, 1)]
+        [DataRow(180, 0, -1, 0, -1)]
+        [DataRow(90, 0, -1, 1, 0)]
+        [DataRow(-90, 0, -1, -1, 0)]
+
+        [DataRow(45, 0, -1, b, b)]
+        [DataRow(-45, 0, -1, -b, b)]
+
+        [DataRow(135, 0, -1, b, -b)]
+        [DataRow(-135, 0, -1, -b, -b)]
+
+
+        [DataRow(0, -1, 0, 0, 1)]
+        [DataRow(180, -1, 0, 0, -1)]
+        [DataRow(90, -1, 0, 1, 0)]
+        [DataRow(-90, -1, 0, -1, 0)]
+
+        [DataRow(45, -1, 0, b, b)]
+        [DataRow(-45, -1, 0, -b, b)]
+
+        [DataRow(135, -1, 0, b, -b)]
+        [DataRow(-135, -1, 0, -b, -b)]
+*/
+        public void RotateInternal_Test(double Degrees, double x, double y, double expectedX, double expectedY)
+        {
+            var actual = MathHelper.RotateInternal(MathHelper.ToRadians(Degrees), new PointD(x, y));
+            Assert.AreEqual(expectedX, actual.X, 0.00001, $"{actual} != {new PointD(expectedX, expectedY)}");
+            Assert.AreEqual(expectedY, actual.Y, 0.00001, $"{actual} != {new PointD(expectedX, expectedY)}");
+        }
     }
 }

@@ -4,9 +4,22 @@ using System;
 namespace Asteroids.Standard
 {
 #nullable disable
-    public class Angle
+    public class Angle: IComparable<Angle>
     {
-        public double Value { get; set; }
+        public int CompareTo(Angle other)
+        {
+            if (other == null) return 1;
+            return this.Value.CompareTo(other.Value);
+        }
+
+        public static Angle Zero => new Angle(0);
+        public static Angle Right => new Angle(MathHelper.ToRadians(90));
+        public static Angle Left => new Angle(MathHelper.ToRadians(-90));
+        public static Angle Up => new Angle(MathHelper.ToRadians(180));
+        public static Angle Down => new Angle(MathHelper.ToRadians(-180));
+    
+        private double _value { get; set; }
+        public double Value { get { return _value; } set { _value = MathHelper.NormalizeAngle(value); } }
         public double ValueDegee => MathHelper.ToDegrees(Value);
 
         public Angle(double value)
