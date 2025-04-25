@@ -56,7 +56,7 @@ namespace Asteroids.Standard.Components
             var sinVal = Math.Sin(Radians);
             var cosVal = Math.Cos(Radians);
 
-            VelocityX = (int)(-InitialVelocity * sinVal) + parentShip.GetVelocityX();
+            VelocityX = (int)(InitialVelocity * sinVal) + parentShip.GetVelocityX();
             VelocityY = (int)(InitialVelocity * cosVal) + parentShip.GetVelocityY();
         }
 

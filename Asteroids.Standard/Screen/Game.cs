@@ -280,7 +280,7 @@ namespace Asteroids.Standard.Screen
         /// </summary>
         public void Left()
         {
-            if (_paused || _cache.Ship?.IsAlive != true)
+            if (/*_paused || */_cache.Ship?.IsAlive != true)
                 return;
 
             _cache.Ship.RotateLeft();
@@ -299,7 +299,7 @@ namespace Asteroids.Standard.Screen
         /// </summary>
         public void Right()
         {
-            if (_paused || _cache.Ship?.IsAlive != true)
+            if (/*_paused ||*/ _cache.Ship?.IsAlive != true)
                 return;
 
             _cache.Ship.RotateRight();

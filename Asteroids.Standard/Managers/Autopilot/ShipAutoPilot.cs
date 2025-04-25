@@ -186,7 +186,7 @@ namespace Asteroids.Standard
 
                     Console.WriteLine($"allowFire = {allowFire} {diff} {Target.LeftRelativeToCenterAngle + diff} = {Target.RightRelativeToCenterAngle + diff}, {Target.Distance}");
 
-                    /*
+                    
 
                     double targetCenterAngleDegrees = Math.Abs(MathHelper.ToDegrees(diff));
 
@@ -256,7 +256,7 @@ namespace Asteroids.Standard
 
                    // if (allowFire)
                     Console.WriteLine($"allowFire = {allowFire} {diff} {Target.LeftRelativeToCenterAngle + diff} = {Target.RightRelativeToCenterAngle + diff}, {Target.Distance}");
-                    */
+                    
 
                     /*                  
                                       allowFire |= staticView.Any(t=> {
@@ -295,9 +295,9 @@ namespace Asteroids.Standard
                     // Fire bullets that are not already moving
                     foreach (var bullet in _env._cache.GetBulletsAvailable())
                     {
-                        //bullet.ScreenObject.Shoot(_ship);
+                        bullet.ScreenObject.Shoot(_ship);
 
-                        Sounds.ActionSounds.PlaySound(this, ActionSound.Fire);
+                        //Sounds.ActionSounds.PlaySound(this, ActionSound.Fire);
                         //_ship._game.Pause();
                         return;
                     }

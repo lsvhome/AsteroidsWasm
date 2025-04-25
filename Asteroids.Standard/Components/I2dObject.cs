@@ -1,11 +1,13 @@
 ﻿#nullable disable
 using Asteroids.Standard.Enums;
+using Asteroids.Standard.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Drawing;
 using System.Text;
+using static Asteroids.Standard.Managers.TextManager;
 
 namespace Asteroids.Standard.Components
 {
@@ -51,9 +53,26 @@ namespace Asteroids.Standard.Components
 
     public class Text
     {
+        public Text(string textVal, PointD start, DrawColor color, Justify justification, int locationTop, int letterWidth, int letterHeight)
+        {
+            TextVal = textVal;
+            Start = start;
+            Color = color;
+            Justification = justification;
+            LocationTop = locationTop;
+            LetterWidth = letterWidth;
+            LetterHeight = letterHeight;
+        }
         public DrawColor Color { get; set; }
         public PointD Start { get; set; }
         public string TextVal { get; set; }
+
+        public Justify Justification { get; set; }
+
+        public int LocationTop { get; set; }
+        public int LetterWidth { get; set; }
+
+        public int LetterHeight { get; set; }
     }
 
 

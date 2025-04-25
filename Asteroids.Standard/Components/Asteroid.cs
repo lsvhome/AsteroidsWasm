@@ -198,7 +198,9 @@ namespace Asteroids.Standard.Components
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
 
-        public IList<Text> Texts => new List<Text> { new Text { TextVal = ((int)MathHelper.ToDegrees(Radians)).ToString(),  Start = CurrentLocation, Color = DrawColor.Orange } };
+        public IList<Text> Texts => new List<Text> { 
+            //new Text(((int)MathHelper.ToDegrees(Radians)).ToString(), CurrentLocation, DrawColor.Orange, ) { Start = CurrentLocation, Color = DrawColor.Orange } 
+        };
 
         #endregion IDrawableObject
     }

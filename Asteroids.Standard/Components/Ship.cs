@@ -95,7 +95,7 @@ namespace Asteroids.Standard.Components
             const double addThrust = 90 / ScreenCanvas.FramesPerSecond;
             const double maxThrustSpeed = 5000 / ScreenCanvas.FramesPerSecond;
 
-            var incX = -(addThrust * sinVal);
+            var incX = (addThrust * sinVal);
             var incY = addThrust * cosVal;
 
             VelocityX += incX;
@@ -196,7 +196,7 @@ namespace Asteroids.Standard.Components
             {
                 var cl = (PointD)this.GetCurrentLocation();
                 var r = this.GetRadians();
-                var dv = MathHelper.TransformPolarToDecart(new PolarCoordinates { Angle = -this.GetRadians(), Distance = ShipDirectionVectorLenght });
+                var dv = MathHelper.TransformPolarToDecart(new PolarCoordinates { Angle = this.GetRadians(), Distance = ShipDirectionVectorLenght });
 
                 var end = cl + dv;
                 var v = new VectorD
@@ -216,20 +216,25 @@ namespace Asteroids.Standard.Components
         #region IDrawableObject
 
         public IList<PointD> Dots => new List<PointD>();
-
-        public IList<IVectorD> Vectors => new List<IVectorD> { ShipDirectionVector , new VectorD { Start = new PointD ( 0,0), End = new PointD ( 5000, 5000 ), Color = DrawColor.Blue } };
+        int k = 150;
+        public IList<IVectorD> Vectors => new List<IVectorD> { ShipDirectionVector 
+            , new VectorD { Start = new PointD (k,k), End = new PointD ( 1500, k ), Color = DrawColor.Blue }
+            , new VectorD { Start = new PointD (k,k), End = new PointD ( k, 1500 ), Color = DrawColor.Blue }
+        };
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> { 
             
             new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
 
-            new Poligon { Color = DrawColor.Blue, Points = AAA().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
-            new Poligon { Color = DrawColor.Blue, Points = BBB().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() }
-            //new Poligon { Color = DrawColor.Blue, Points = CCC().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() }
+            new Poligon { Color = DrawColor.Blue, Points = OutFrame().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+            new Poligon { Color = DrawColor.Blue, Points = IntFrame().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+            new Poligon { Color = DrawColor.Orange, Points = CanvasOrientationTriangle().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+            
+            new Poligon { Color = DrawColor.Blue, Points = ShipOrientationTriangle().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() }
 
         };
 
-        IList<Point> AAA()
+        IList<Point> OutFrame()
         { 
             int min = 100;
             int maxX = 10000-min;
@@ -243,7 +248,7 @@ namespace Asteroids.Standard.Components
             return ret;
         }
 
-        IList<Point> BBB()
+        IList<Point> IntFrame()
         {
             int minX = 3000;
             int minY = 3000;
@@ -258,20 +263,30 @@ namespace Asteroids.Standard.Components
             return ret;
         }
 
-        //IList<Point> CCC()
-        //{
-        //    PointD c = this.CurrentLocation;
-        //    var ret = new List<Point>();
-        //    const int shipWidthHalf = 500;
-        //    const int shipHeightHalf = shipWidthHalf * 2;
-
-        //    ret.Add(new PointD(0, +shipHeightHalf)+c);
-        //    ret.Add(new PointD(shipWidthHalf, -shipHeightHalf)+c);
-        //    ret.Add(new PointD(-shipWidthHalf, -shipHeightHalf)+c);
+        IList<Point> CanvasOrientationTriangle()
+        {
+            var ret = new List<Point>();
+            int k = 200;
+            ret.Add(new PointD(k, k));
+            ret.Add(new PointD(10000-k, 7500 - k));
+            ret.Add(new PointD(k, 7500 - k));
 
 
-        //    return ret;
-        //}
+            return ret;
+        }
+
+        IList<Point> ShipOrientationTriangle()
+        {
+            
+            var ret = new List<Point>();
+            int k = 200;
+            ret.Add(new PointD(CurrentLocation.X, CurrentLocation.Y));
+            ret.Add(new PointD(CurrentLocation.X + k, CurrentLocation.Y - k));
+            ret.Add(new PointD(CurrentLocation.X - 0, CurrentLocation.Y - k));
+
+
+            return ret;
+        }
 
         public IList<Text> Texts => new List<Text>();
 

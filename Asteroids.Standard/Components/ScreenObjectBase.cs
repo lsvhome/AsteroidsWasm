@@ -26,7 +26,7 @@ namespace Asteroids.Standard.Components
             _updatePointsTransformedLock = new object();
 
             //templates are drawn nose "up"
-            Radians = 180 * ScreenCanvas.RadiansPerDegree;
+            //Radians = 180 * ScreenCanvas.RadiansPerDegree;
             Radians = 0;
 
             _points = new List<Point>();
@@ -199,7 +199,8 @@ namespace Asteroids.Standard.Components
         /// </summary>
         private void RotateInternal()
         {
-            Radians = Radians  % ScreenCanvas.RadiansPerCircle;
+            //Radians = Radians % ScreenCanvas.RadiansPerCircle;
+            Radians = MathHelper.NormalizeAngle(Radians);
             var radians = Radians;
             Angle r = Radians;
             var sinVal = Math.Sin(radians);
@@ -237,7 +238,7 @@ namespace Asteroids.Standard.Components
             lock (_updatePointsTransformedLock)
             {
                 PointsTransformed.Clear();
-                foreach (var pt in newPointsTransformed)
+                foreach (var pt in newPointsTransformed2)
                     PointsTransformed.Add(pt);
             }
         }

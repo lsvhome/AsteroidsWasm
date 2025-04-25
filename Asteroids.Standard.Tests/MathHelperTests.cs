@@ -156,6 +156,7 @@ namespace Asteroids.Standard.Tests
         const double b = 0.7071067811865476; // cos(45) = sin(45) = 0.7071067811865476
 
         [DataTestMethod]
+        
         [DataRow(0, 0, 1, 0, 1)]
         [DataRow(180, 0, 1, 0, -1)]
         [DataRow(90, 0, 1, 1, 0)]
@@ -171,38 +172,40 @@ namespace Asteroids.Standard.Tests
         [DataRow(0, 1, 0, 1, 0)]
         [DataRow(180, 1, 0, -1, 0)]
         [DataRow(90, 1, 0, 0, -1)]
-        [DataRow(-90, 1, 0, 1, 0)]
+        [DataRow(-90, 1, 0, 0, 1)]
 
         [DataRow(45, 1, 0, b, -b)]
         [DataRow(-45, 1, 0, b, b)]
 
         [DataRow(135, 1, 0, -b, -b)]
-        [DataRow(-135, 1, 0, b, -b)]
+        [DataRow(-135, 1, 0, -b, b)]
 
-/*
-        [DataRow(0, 0, -1, 0, 1)]
-        [DataRow(180, 0, -1, 0, -1)]
-        [DataRow(90, 0, -1, 1, 0)]
-        [DataRow(-90, 0, -1, -1, 0)]
+        
+        [DataRow(0, 0, -1, 0, -1)]
+        [DataRow(180, 0, -1, 0, 1)]
+        [DataRow(90, 0, -1, -1, 0)]
+        [DataRow(-90, 0, -1, 1, 0)]
+        
+        [DataRow(45, 0, -1, -b, -b)]
+        [DataRow(-45, 0, -1, b, -b)]
 
-        [DataRow(45, 0, -1, b, b)]
-        [DataRow(-45, 0, -1, -b, b)]
-
-        [DataRow(135, 0, -1, b, -b)]
-        [DataRow(-135, 0, -1, -b, -b)]
-
-
-        [DataRow(0, -1, 0, 0, 1)]
-        [DataRow(180, -1, 0, 0, -1)]
-        [DataRow(90, -1, 0, 1, 0)]
-        [DataRow(-90, -1, 0, -1, 0)]
-
-        [DataRow(45, -1, 0, b, b)]
-        [DataRow(-45, -1, 0, -b, b)]
-
-        [DataRow(135, -1, 0, b, -b)]
-        [DataRow(-135, -1, 0, -b, -b)]
-*/
+        [DataRow(135, 0, -1, -b, +b)]
+        [DataRow(-135, 0, -1, +b, +b)]
+        
+        
+        [DataRow(0, -1, 0, -1, 0)]
+        [DataRow(180, -1, 0, 1, 0)]
+        
+        [DataRow(90, -1, 0, 0, 1)]
+        [DataRow(-90, -1, 0, 0, -1)]
+        
+        
+        [DataRow(45, -1, 0, -b, b)]
+        [DataRow(-45, -1, 0, -b, -b)]
+        
+        [DataRow(135, -1, 0, +b, +b)]
+        [DataRow(-135, -1, 0, +b, -b)]
+        
         public void RotateInternal_Test(double Degrees, double x, double y, double expectedX, double expectedY)
         {
             var actual = MathHelper.RotateInternal(MathHelper.ToRadians(Degrees), new PointD(x, y));

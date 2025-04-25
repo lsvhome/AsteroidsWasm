@@ -134,7 +134,7 @@ namespace Asteroids.Standard.Components
         /// </summary>
         static Saucer()
         {
-            PointsTemplate.Add(new Point(-SizeLong, 0));
+            PointsTemplate.Add(new Point(-SizeLong, 0 ));
             PointsTemplate.Add(new Point(-SizeMedium, -SizeShort));
             PointsTemplate.Add(new Point(-SizeShort, -SizeShort));
             PointsTemplate.Add(new Point(-SizeShort, -SizeMedium));

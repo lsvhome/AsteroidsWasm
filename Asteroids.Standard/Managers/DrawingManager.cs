@@ -89,9 +89,9 @@ namespace Asteroids.Standard.Managers
                 {
                     _cache.Ship.Game._textDraw.DrawText(
                         txt.TextVal
-                        , TextManager.Justify.Center
+                        , txt.Justification
                         , (int)txt.Start.Y
-                        , 50, 100
+                        , txt.LetterWidth, txt.LetterHeight
                     );
                 }
 

@@ -1,4 +1,5 @@
 ﻿using Asteroids.Standard.Components;
+using Asteroids.Standard.Screen;
 using System;
 using System.Drawing;
 
@@ -19,10 +20,13 @@ namespace Asteroids.Standard
 
         public static double NormalizeAngle(double radians)
         {
+            radians = radians % ScreenCanvas.RadiansPerCircle;
+
             while (radians < -Math.PI)
-                radians += 2 * Math.PI;
+                radians += ScreenCanvas.RadiansPerCircle;
             while (radians >= Math.PI)
-                radians -= 2 * Math.PI;
+                radians -= ScreenCanvas.RadiansPerCircle;
+
             return radians;
         }
 
@@ -232,14 +236,22 @@ namespace Asteroids.Standard
 
         public static PointD RotateInternal(double Radians, PointD pt)
         {
-            var sinVal = Math.Sin(Radians); // sin 0 = 0 sin 90 = 1
-            var cosVal = Math.Cos(Radians); // cos 0 = 1 sin 90 = 0
+            var g = TransformDecartToPolar(pt);
+            //var angle = MathHelper.NormalizeAngle(g.Angle + Radians);
+            g.Angle = MathHelper.NormalizeAngle(g.Angle + Radians);
+            var ret1 = TransformPolarToDecart(g);
+            return ret1;
 
-            var ret = new PointD(0, 0);
-            ret.X = (pt.X * cosVal - pt.Y * sinVal);
-            ret.Y = (pt.X * sinVal + pt.Y * cosVal);
 
-            return ret;
+
+            //var sinVal = Math.Sin(Radians); // sin 0 = 0 sin 90 = 1
+            //var cosVal = Math.Cos(Radians); // cos 0 = 1 cos 90 = 0
+
+            //var ret = new PointD(0, 0);
+            //ret.X = (pt.X * cosVal - pt.Y * sinVal);
+            //ret.Y = (pt.X * sinVal + pt.Y * cosVal);
+
+            //return ret;
         }
     }
 
