@@ -5,7 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Helpers;
+using Asteroids.Standard.Managers;
 using Asteroids.Standard.Screen;
+using static Asteroids.Standard.MathHelper;
 using static Asteroids.Standard.Sounds.ActionSounds;
 
 namespace Asteroids.Standard.Components
@@ -15,7 +17,11 @@ namespace Asteroids.Standard.Components
     /// </summary>
     internal sealed class Ship : ScreenObjectBase, IDrawableObject
     {
-        internal const double RotateSpeed = 12000 / ScreenCanvas.FramesPerSecond;
+        /// <summary>
+        /// ~Pi = 179.999 degrees (in radians).
+        /// </summary>
+        internal const double MaxRotateSpeedRadians = Math.PI-0.01;
+
         public Game Game { get; private set; }
         /// <summary>
         /// Creates and immediately draws an instance of <see cref="Ship"/>.
@@ -114,16 +120,17 @@ namespace Asteroids.Standard.Components
         }
 
 
-        public double LastRotationSpeedDegrees { get; private set; } = 0;
-        protected internal override void Rotate(double degrees)
+        public Angle LastRotationSpeedDegrees { get; private set; } = 0;
+
+        protected internal override void Rotate(double radians)
         {
-            if (Math.Abs(degrees) > Math.Abs(RotateSpeed))
+            if (Math.Abs(radians) > MaxRotateSpeedRadians)
             {
-                degrees = RotateSpeed;
+                radians = Math.Sign(radians) * MaxRotateSpeedRadians;
             }
 
-            LastRotationSpeedDegrees = degrees;
-            base.Rotate(degrees);
+            LastRotationSpeedDegrees = radians;
+            base.Rotate(radians);
         }
 
         /// <summary>
@@ -131,7 +138,7 @@ namespace Asteroids.Standard.Components
         /// </summary>
         public void RotateLeft()
         {
-            Rotate(-RotateSpeed);
+            Rotate(-MaxRotateSpeedRadians);
         }
 
         /// <summary>
@@ -139,7 +146,7 @@ namespace Asteroids.Standard.Components
         /// </summary>
         public void RotateRight()
         {
-            Rotate(RotateSpeed);
+            Rotate(MaxRotateSpeedRadians);
         }
 
         public void DoAutoPilot()
@@ -214,30 +221,46 @@ namespace Asteroids.Standard.Components
 
 
         #region IDrawableObject
+        public object _lock_BulletDirections = new object();
+        public List<IVectorD> BulletDirections = new List<IVectorD>();
+
 
         public IList<PointD> Dots => new List<PointD>();
         int k = 150;
-        public IList<IVectorD> Vectors => new List<IVectorD> { ShipDirectionVector 
-            , new VectorD { Start = new PointD (k,k), End = new PointD ( 1500, k ), Color = DrawColor.Blue }
-            , new VectorD { Start = new PointD (k,k), End = new PointD ( k, 1500 ), Color = DrawColor.Blue }
-        };
+        public IList<IVectorD> Vectors
+        {
+            get
+            {
+                var ret = new List<IVectorD>();
+                ret.Add(ShipDirectionVector);
+                ret.Add(new VectorD { Start = new PointD(k, k), End = new PointD(1500, k), Color = DrawColor.Blue });
+                ret.Add(new VectorD { Start = new PointD(k, k), End = new PointD(k, 1500), Color = DrawColor.Blue });
+                lock (_lock_BulletDirections)
+                {
+                    ret.AddRange(BulletDirections);
+                }
+                
 
-        public IList<IPoligonD> Poligons => new List<IPoligonD> { 
-            
+                return ret;
+            }
+        }
+
+        public IList<IPoligonD> Poligons => new List<IPoligonD> {
+
             new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
 
-            new Poligon { Color = DrawColor.Blue, Points = OutFrame().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
-            new Poligon { Color = DrawColor.Blue, Points = IntFrame().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
-            new Poligon { Color = DrawColor.Orange, Points = CanvasOrientationTriangle().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+            //new Poligon { Color = DrawColor.Blue, Points = OutFrame().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+            //new Poligon { Color = DrawColor.Blue, Points = IntFrame().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+            //new Poligon { Color = DrawColor.Orange, Points = CanvasOrientationTriangle().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
             
-            new Poligon { Color = DrawColor.Blue, Points = ShipOrientationTriangle().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() }
+            //new Poligon { Color = DrawColor.Blue, Points = ShipOrientationTriangle().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() }
 
         };
 
         IList<Point> OutFrame()
-        { 
+        {
             int min = 100;
-            int maxX = 10000-min;
+            int maxX = 10000 - min;
             int maxY = 7500 - min;
             var ret = new List<Point>();
             ret.Add(new Point(min, min));
@@ -268,7 +291,7 @@ namespace Asteroids.Standard.Components
             var ret = new List<Point>();
             int k = 200;
             ret.Add(new PointD(k, k));
-            ret.Add(new PointD(10000-k, 7500 - k));
+            ret.Add(new PointD(10000 - k, 7500 - k));
             ret.Add(new PointD(k, 7500 - k));
 
 
@@ -277,7 +300,7 @@ namespace Asteroids.Standard.Components
 
         IList<Point> ShipOrientationTriangle()
         {
-            
+
             var ret = new List<Point>();
             int k = 200;
             ret.Add(new PointD(CurrentLocation.X, CurrentLocation.Y));
@@ -288,7 +311,29 @@ namespace Asteroids.Standard.Components
             return ret;
         }
 
-        public IList<Text> Texts => new List<Text>();
+        public IList<Text> Texts
+        {
+            get
+            {
+                var ret = new List<Text>();
+
+
+
+                var p = new PointD { X = 100, Y = 800 };
+                var t = new Text(
+                    $" SHIP=[ {(Angle)this.GetRadians()} ] RS=[ {(int)LastRotationSpeedDegrees.ValueDegee} ] ",
+                    p,
+                    DrawColor.Red,
+                    TextManager.Justify.Center,
+                    (int)p.Y,
+                    100, 200
+                    );
+
+                ret.Add(t);
+
+                return ret;
+            }
+        }
 
         #endregion IDrawableObject
     }

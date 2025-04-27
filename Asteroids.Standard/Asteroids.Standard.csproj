@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	<Nullable>enable</Nullable>
 	<LangVersion>13</LangVersion>
-	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +12,12 @@
     <EmbeddedResource Include="Sounds\*.wav">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Asteroids.Standard.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

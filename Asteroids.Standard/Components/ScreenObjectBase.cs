@@ -181,15 +181,13 @@ namespace Asteroids.Standard.Components
 
         /// <summary>
         /// Rotates all internal <see cref="Point"/>s used to generate polygons on draw
-        /// by a number of decimal degrees.
+        /// by a number of decimal radians.
         /// </summary>
-        /// <param name="degrees">Rotation amount in degrees.</param>
-        protected internal virtual void Rotate(double degrees)
-        {
-            //Get radians in 1/FramesPerSecond increments
-            var radiansAdjust = degrees * ScreenCanvas.RadiansPerDegree;
-            Radians += radiansAdjust / ScreenCanvas.FramesPerSecond;
+        /// <param name="radians">Rotation amount in radians.</param>
 
+        protected internal virtual void Rotate(double radians)
+        {
+            Radians += radians / ScreenCanvas.FramesPerSecond;
             RotateInternal();
         }
 
@@ -215,23 +213,23 @@ namespace Asteroids.Standard.Components
                 points.AddRange(_points);
 
             //Re-transform the points
-            var ptTransformed = new Point(0, 0);
+            //var ptTransformed = new Point(0, 0);
             var ptTransformed2 = new Point(0, 0);
             foreach (var pt in points)
             {
-                ptTransformed.X = (int)(pt.X * cosVal - pt.Y * sinVal);
+                //ptTransformed.X = (int)(pt.X * cosVal - pt.Y * sinVal);
 //#warning #error here
-                ptTransformed.Y = (int)(pt.X * sinVal + pt.Y * cosVal);
+                //ptTransformed.Y = (int)(pt.X * sinVal + pt.Y * cosVal);
 
                 ptTransformed2 = RotateInternal(radians, pt);
-                newPointsTransformed.Add(ptTransformed);
+                //newPointsTransformed.Add(ptTransformed);
                 newPointsTransformed2.Add(ptTransformed2);
-                if (ptTransformed.X != ptTransformed2.X)
-                { 
-                }
-                if (ptTransformed.Y != ptTransformed2.Y)
-                {
-                }
+                //if (ptTransformed.X != ptTransformed2.X)
+                //{ 
+                //}
+                //if (ptTransformed.Y != ptTransformed2.Y)
+                //{
+                //}
             }
 
             //Add the points

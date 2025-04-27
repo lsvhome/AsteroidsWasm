@@ -215,8 +215,10 @@ namespace Asteroids.Standard.Screen
                         || _collisionManager.MissileCollision(shipPoints)
                         || _collisionManager.AsteroidBeltCollision(shipPoints)
                     )
+                    {
                         foreach (var explosion in _cache.Ship.Explode())
                             _cache.AddExplosion(explosion);
+                    }
                 }
 
                 //See if a bullet or the ship hit the saucer

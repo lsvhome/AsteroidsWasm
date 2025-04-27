@@ -44,7 +44,7 @@ namespace Asteroids.Standard.Components
             Align(target);
 
             //adjust velocity
-            VelocityX = -Math.Sin(Radians) * Velocity;
+            VelocityX = Math.Sin(Radians) * Velocity;
             VelocityY = Math.Cos(Radians) * Velocity;
 
             return base.Move();

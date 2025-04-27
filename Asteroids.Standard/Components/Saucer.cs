@@ -135,15 +135,15 @@ namespace Asteroids.Standard.Components
         static Saucer()
         {
             PointsTemplate.Add(new Point(-SizeLong, 0 ));
-            PointsTemplate.Add(new Point(-SizeMedium, -SizeShort));
-            PointsTemplate.Add(new Point(-SizeShort, -SizeShort));
-            PointsTemplate.Add(new Point(-SizeShort, -SizeMedium));
-            PointsTemplate.Add(new Point(SizeShort, -SizeMedium));
-            PointsTemplate.Add(new Point(SizeShort, -SizeShort));
-            PointsTemplate.Add(new Point(SizeMedium, -SizeShort));
-            PointsTemplate.Add(new Point(SizeLong, 0));
-            PointsTemplate.Add(new Point(SizeMedium, SizeShort));
             PointsTemplate.Add(new Point(-SizeMedium, SizeShort));
+            PointsTemplate.Add(new Point(-SizeShort, SizeShort));
+            PointsTemplate.Add(new Point(-SizeShort, SizeMedium));
+            PointsTemplate.Add(new Point(SizeShort, SizeMedium));
+            PointsTemplate.Add(new Point(SizeShort, SizeShort));
+            PointsTemplate.Add(new Point(SizeMedium, SizeShort));
+            PointsTemplate.Add(new Point(SizeLong*2, 0));
+            PointsTemplate.Add(new Point(SizeMedium, -SizeShort));
+            PointsTemplate.Add(new Point(-SizeMedium, -SizeShort));
         }
 
         #endregion

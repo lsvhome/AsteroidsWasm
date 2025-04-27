@@ -275,7 +275,17 @@ namespace Asteroids.Standard
             _currentTitle.DrawScreen();
         }
 
+        static object _lock = new object();
+
         private bool PlayGame()
+        {
+            lock (_lock)
+            {
+                return PlayGameInternal();
+            }
+        }
+
+        private bool PlayGameInternal()
         {
             if (_leftPressed)
                 _game.Left();
@@ -340,7 +350,10 @@ namespace Asteroids.Standard
         {
             // Screen Flip Timer
             _timerFlip = new Timer(TimerInterval);
-            _timerFlip.Elapsed += async (s, e) => await FlipDisplay();
+            _timerFlip.Elapsed += async (s, e) =>
+            {
+                await FlipDisplay();
+            };
             _timerFlip.AutoReset = true;
             _timerFlip.Enabled = true;
         }

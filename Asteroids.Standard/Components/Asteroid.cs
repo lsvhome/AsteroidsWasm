@@ -60,13 +60,13 @@ namespace Asteroids.Standard.Components
             var sizeFactor = (AsteroidSize.Large - Size + 1) * 1.05;
 
             // choose random rotate speed
-            _rotateSpeed = (RandomizeHelper.Random.Next(10000) - 5000) / fps;
+            _rotateSpeed = (RandomizeHelper.Random.Next(10000) - 5000) / fps * ScreenCanvas.RadiansPerDegree;
 
             // choose a velocity for the asteroid (smaller asteroids can go faster)
             //VelocityX = 3 * (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
             VelocityY = (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
-            VelocityX = 1000 / fps;// 1000 / fps;
-            VelocityY = 1000 / fps;
+            VelocityX = 5000 / fps;// 1000 / fps;
+            VelocityY = 0;// 1000 / fps;
         }
 
         /// <summary>

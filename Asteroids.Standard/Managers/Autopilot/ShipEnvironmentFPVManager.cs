@@ -45,10 +45,10 @@ namespace Asteroids.Standard
                 if (_cache.Saucer != null)
                 {
                     var obj = _cache.Saucer;
-                    var objLoc = TransformViewToFPV(_cache.Saucer, _cache.Ship);
+                    var objLoc = TransformViewToFPV(obj, _cache.Ship);
                     objLoc.ObjectType = ObjectType.Saucer;
-                    var allpoints = _cache.Saucer.GetPoints();
-                    var half = allpoints.Select(p => Math.Max(Math.Abs(p.X- _cache.Saucer.GetCurrentLocation().X), Math.Abs(p.Y- _cache.Saucer.GetCurrentLocation().Y))).Max();
+                    var allpoints = obj.GetPoints();
+                    var half = allpoints.Select(p => Math.Max(Math.Abs(p.X - obj.GetCurrentLocation().X), Math.Abs(p.Y - obj.GetCurrentLocation().Y))).Max();
                     objLoc.Distance = objLoc.CenterCoordinates.Distance - half;
                     objLoc.Velocity = new PointD { X = obj.GetVelocityX(), Y = obj.GetVelocityY() };
                     ret.Add(objLoc);

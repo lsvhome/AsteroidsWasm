@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Asteroids.Standard.Components;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -32,6 +33,13 @@ namespace Asteroids.Standard.Helpers
 
         #region IsInsidePolygon
 
+        public static bool IsInsidePolygon(this PointD point, IList<PointD> polygonPoints)
+        {
+            Point p = point;
+            IList<Point> pp = polygonPoints.Select(p => (Point)p).ToList();
+            return IsInsidePolygon(p, pp);
+        }
+
         /// <summary>
         /// Determines is a <see cref="Point"/> is inside a polygon.
         /// </summary>
@@ -44,26 +52,28 @@ namespace Asteroids.Standard.Helpers
             var firstPoint = polygonPoints.First();
             var lastPoint = polygonPoints.Last();
 
-            var totalAngle = GetAngle(
+            double totalAngle = Math.Abs(GetAngle(
                 lastPoint.X, lastPoint.Y,
                 point.X, point.Y,
                 firstPoint.X, firstPoint.Y
-            );
+            ));
 
             // Add the angles from the point  to each other pair of vertices.
             for (var i = 0; i < polygonPoints.Count - 1; i++)
             {
-                totalAngle += GetAngle(
+                var a = GetAngle(
                     polygonPoints[i].X, polygonPoints[i].Y,
                     point.X, point.Y,
                     polygonPoints[i + 1].X, polygonPoints[i + 1].Y
                 );
+
+                totalAngle += Math.Abs(a);
             }
 
             // The total angle should be 2 * PI or -2 * PI if
             // the point is in the polygon and close to zero
             // if the point is outside the polygon.
-            return Math.Abs(totalAngle) > 0.000001;
+            return Math.Abs(totalAngle - 2*Math.PI) < 0.000001;
         }
 
         /// <summary>
@@ -74,7 +84,13 @@ namespace Asteroids.Standard.Helpers
         /// <returns>Indication if ANY point is contained in the polygon.</returns>
         public static bool ContainsAnyPoint(this IList<Point> ptsPolygon, IList<Point> ptsCheck)
         {
-            return ptsCheck.Any(pt => pt.IsInsidePolygon(ptsPolygon));
+            var ret = ptsCheck.Any(pt => pt.IsInsidePolygon(ptsPolygon));
+            if (ret)
+            {
+                var x = ptsCheck.FirstOrDefault(pt => pt.IsInsidePolygon(ptsPolygon));
+                return x != null;
+            }
+            return ret;
         }
 
         #endregion
@@ -89,7 +105,7 @@ namespace Asteroids.Standard.Helpers
         /// Return a value between PI and -PI. Note that the value is the opposite of what you 
         /// might expect because Y coordinates increase downward.
         /// </remarks>
-        public static double GetAngle(double ax, double ay, double bx, double by, double cx, double cy)
+        public static Angle GetAngle(double ax, double ay, double bx, double by, double cx, double cy)
         {
             var triangle = new Asteroids.Standard.MathHelper.TriangleInfo() { A = new Components.PointD(ax, ay), B = new Components.PointD(bx, by), C = new Components.PointD(cx, cy) };
 
@@ -106,7 +122,7 @@ namespace Asteroids.Standard.Helpers
             //{ 
             //}
 
-            return triangle.AngleBeta.Value;
+            return triangle.AngleBeta;
         }
         
         /*
