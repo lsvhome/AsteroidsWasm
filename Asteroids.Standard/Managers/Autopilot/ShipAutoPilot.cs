@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using Asteroids.Standard.Components;
 using Asteroids.Standard.Enums;
+using Asteroids.Standard.Helpers;
 using Asteroids.Standard.Managers;
 using Asteroids.Standard.Screen;
 using System;
@@ -29,59 +30,6 @@ namespace Asteroids.Standard
         /// </summary>
         internal ShipEnvironmentObjectLocation Target { get; private set; }
 
-
-        TriangleInfo TargetPredictionTriangleInfo(ShipEnvironmentObjectLocation target)
-        {
-            if (target?.Velocity == null)
-            {
-                var zeroPoint = new PointD { X = 0, Y = 0 };
-                return new TriangleInfo { A = zeroPoint, B = zeroPoint, C = zeroPoint };
-            }
-            else
-            {
-                var bVelocity = Bullet.InitialVelocity;// Math.Sqrt(Math.Pow(Bullet.InitialVelocity, 2) + Math.Pow(Bullet.InitialVelocity, 2));
-                Angle ta = target.CenterRelativeLocationPolar(_ship).Angle;
-                Angle angleBeta = MathHelper.NormalizeAngle(Math.PI - (Math.PI - target.VelocityP.Angle - (Math.PI - ta)));
-
-                var triangle = MathHelper.GetTriangleInfo(_ship.GetCurrentLocation(), target.CenterAbsoluteLocationDecart(_ship), target.VelocityP.Distance, bVelocity, angleBeta);
-
-
-
-                return triangle;
-            }
-        }
-
-        PolarCoordinates TargetPredictionPolarRelativeToShip(ShipEnvironmentObjectLocation target)
-        {
-            //var ret = MathHelper.TransformDecartToPolar(TargetPredictionDecartRelative(target));
-
-
-            var bVelocity = Math.Sqrt(Math.Pow(Bullet.InitialVelocity, 2) + Math.Pow(Bullet.InitialVelocity, 2));
-            var angleBeta = MathHelper.NormalizeAngle(target.VelocityP.Angle - target.CenterRelativeLocationPolar(_ship).Angle);
-            var bulletRelativeToCurrentPositionVector = MathHelper.GetTriangleInfo(_ship.GetCurrentLocation(), target.CenterAbsoluteLocationDecart(_ship), target.VelocityP.Distance, bVelocity, angleBeta);
-            //var bulletRelativeToCurrentPositionVector = MathHelper.Triangle(_ship.GetCurrentLocation(), target.CenterAbsoluteLocationDecart(_ship), target.VelocityP.Distance, bVelocity, angleBeta);
-
-
-            Angle angleAlpha = bulletRelativeToCurrentPositionVector.AngleAlphaDirectionPositive ? bulletRelativeToCurrentPositionVector.AngleAlpha : -bulletRelativeToCurrentPositionVector.AngleAlpha;
-
-
-            var p = new PolarCoordinates { Angle = target.CenterRelativeLocationPolar(_ship).Angle - bulletRelativeToCurrentPositionVector.AngleAlpha, Distance = bulletRelativeToCurrentPositionVector.Lb };
-
-
-            return p;
-        }
-
-        Angle TragetPredictedAngleToShipDiff(ShipEnvironmentObjectLocation target)
-        {
-            Angle a = TargetPredictionPolarRelativeToShip(target).Angle;
-            Angle b = _ship.GetRadians();
-            Angle ret = MathHelper.NormalizeAngle(a - b);
-            //Console.WriteLine($"TragetPredictedAngleToShipDiff = ret= = {ret} = {MathHelper.ToDegrees(ret)}, a=  [ {a} = {MathHelper.ToDegrees(a)} ], b= = {b} = {MathHelper.ToDegrees(b)}");
-            return ret;
-        }
-
-
-        List<VectorD> shoots = new List<VectorD>();
         public void Execute()
         {
             try
@@ -95,6 +43,25 @@ namespace Asteroids.Standard
 
 
                 var mostJeopardizeObject = staticView.OrderBy(x => x.Distance).FirstOrDefault();
+
+                if (mostJeopardizeObject?.Distance < 800)
+                {
+                    if (Math.Abs(mostJeopardizeObject.CenterCoordinates.Angle.ValueDegee) > 90)
+                    {
+                        foreach (var bullet in _env._cache.GetBulletsAvailable())
+                        {
+                            bullet.ScreenObject.Shoot(_ship);
+                            break;
+                        }
+                        _ship.Thrust();
+                        foreach (var bullet in _env._cache.GetBulletsAvailable())
+                        {
+                            bullet.ScreenObject.Shoot(_ship);
+                            break;
+                        }
+                    }
+                }
+
                 if (mostJeopardizeObject?.Distance < 400)
                 {
                     foreach (var bullet in _env._cache.GetBulletsAvailable())
@@ -102,11 +69,35 @@ namespace Asteroids.Standard
                         bullet.ScreenObject.Shoot(_ship);
                         break;
                     }
+
                     _ship.Hyperspace();
                     return;
                 }
 
+                
+                var inFrame = GeometryHelper.IsInsidePolygon(
+                    (Point)_ship.GetCurrentLocation(),
+                    _ship.IntFrame()
+                );
 
+                if (!inFrame)
+                {
+                    Point center = new Point(ScreenCanvas.CanvasWidth / 2, ScreenCanvas.CanvasHeight / 2);
+                    VectorD v = new VectorD
+                    {
+                        Start = _ship.GetCurrentLocation(),
+                        End = center
+                    };
+
+                    var centerDirection = MathHelper.TransformDecartToPolar(v);
+
+                    var diff = MathHelper.NormalizeAngle(centerDirection.Angle) - MathHelper.NormalizeAngle(_ship.GetRadians());
+
+                    if (Math.Abs(diff) < MathHelper.ToRadians(30))
+                    {
+                        _ship.Thrust();
+                    }
+                }
 
 
 

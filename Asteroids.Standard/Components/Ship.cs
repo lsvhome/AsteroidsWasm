@@ -272,7 +272,7 @@ namespace Asteroids.Standard.Components
             return ret;
         }
 
-        IList<Point> IntFrame()
+        public IList<Point> IntFrame()
         {
             int minX = 3000;
             int minY = 3000;

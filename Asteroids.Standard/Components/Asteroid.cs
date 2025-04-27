@@ -169,7 +169,7 @@ namespace Asteroids.Standard.Components
             var addPoint = new Action<IList<Point>, double, AsteroidSize>((l, radPt, aSize) =>
             {
                 l.Add(new Point(
-                    (int)(Math.Sin(radPt) * -((int)aSize * SizeIncrement))
+                    (int)(Math.Sin(radPt) * ((int)aSize * SizeIncrement))
                     , (int)(Math.Cos(radPt) * ((int)aSize * SizeIncrement))
                 ));
             });

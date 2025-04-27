@@ -159,7 +159,7 @@ namespace Asteroids.Standard
                     _scoreManager.ResetGame();
                     _game = new Game(_scoreManager, _textManager, _screenCanvas);
                     GameStatus = GameMode.Game;
-                    _APressed = true;
+                    _APressed = false;
                     _leftPressed = false;
                     _rightPressed = false;
                     _upPressed = false;

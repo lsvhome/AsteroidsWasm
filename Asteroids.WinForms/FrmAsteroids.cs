@@ -114,6 +114,10 @@ namespace Asteroids.WinForms
                     key = PlayKey.P;
                     break;
 
+                case Keys.A:
+                    key = PlayKey.A;
+                    break;
+
                 default:
                     return;
             }
@@ -152,6 +156,10 @@ namespace Asteroids.WinForms
 
                 case Keys.P:
                     key = PlayKey.P;
+                    break;
+
+                case Keys.A:
+                    key = PlayKey.A;
                     break;
 
                 default:

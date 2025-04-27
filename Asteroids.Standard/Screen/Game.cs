@@ -211,9 +211,13 @@ namespace Asteroids.Standard.Screen
                 {
                     var shipPoints = _cache.ShipPoints;
 
-                    if (_collisionManager.SaucerCollision(shipPoints)
-                        || _collisionManager.MissileCollision(shipPoints)
-                        || _collisionManager.AsteroidBeltCollision(shipPoints)
+                    var saucerCollision = _collisionManager.SaucerCollision(shipPoints);
+                    var missileCollision = _collisionManager.MissileCollision(shipPoints);
+                    var asteroidBeltCollision = _collisionManager.AsteroidBeltCollision(shipPoints);
+
+                    if (saucerCollision
+                        || missileCollision
+                        || asteroidBeltCollision
                     )
                     {
                         foreach (var explosion in _cache.Ship.Explode())
