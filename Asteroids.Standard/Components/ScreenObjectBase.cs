@@ -185,10 +185,12 @@ namespace Asteroids.Standard.Components
         /// </summary>
         /// <param name="radians">Rotation amount in radians.</param>
 
-        protected internal virtual void Rotate(double radians)
+        protected internal virtual double Rotate(double radians)
         {
-            Radians += radians / ScreenCanvas.FramesPerSecond;
+            var diff = radians / ScreenCanvas.FramesPerSecond;
+            Radians += diff;
             RotateInternal();
+            return diff;
         }
 
         /// <summary>

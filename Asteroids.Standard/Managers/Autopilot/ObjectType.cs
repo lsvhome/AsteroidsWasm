@@ -3,7 +3,7 @@
     public enum ObjectType
     {
         Asteroid,
-        Saucer,
-        Misile
+        Misile,
+        Saucer
     }
 }

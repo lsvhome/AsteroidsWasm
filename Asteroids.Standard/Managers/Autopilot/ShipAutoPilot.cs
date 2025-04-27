@@ -51,45 +51,6 @@ namespace Asteroids.Standard
             }
         }
 
-        PointD TargetPredictionDecart(ShipEnvironmentObjectLocation target)
-        {
-            if (target?.Velocity == null)
-            {
-                return new PointD { X = 0, Y = 0 };
-            }
-            else
-            {
-                //var bVelocity = Math.Sqrt(Math.Pow(Bullet.InitialVelocity, 2) + Math.Pow(Bullet.InitialVelocity, 2));
-                //var angleBeta = MathHelper.NormalizeAngle( target.VelocityP.Angle - target.CenterRelativeLocationPolar(_ship).Angle);
-                //var triangle = MathHelper.GetTriangleInfo(_ship.GetCurrentLocation(), target.CenterAbsoluteLocationDecart(_ship), target.VelocityP.Distance, bVelocity, angleBeta);
-                var triangle = TargetPredictionTriangleInfo(target);
-                var bulletRelativeToCurrentPositionVector = triangle.C - triangle.A;
-
-                var ret = triangle.C - triangle.B;
-                return ret;
-            }
-        }
-
-        static object _lockObj = new object();
-
-        /// <summary>
-        /// Vector from current position to predicted position
-        /// </summary>
-        VectorD TargetPredictionDecartAbsolute(ShipEnvironmentObjectLocation target)
-        {
-            //lock (_lockObj)
-            {
-                var tc = target.CenterAbsoluteLocationDecart(_ship);
-                var ret = new VectorD
-                {
-                    Start = tc,
-                    End = tc - TargetPredictionDecart(target)
-                };
-
-                return ret;
-            }
-        }
-
         PolarCoordinates TargetPredictionPolarRelativeToShip(ShipEnvironmentObjectLocation target)
         {
             //var ret = MathHelper.TransformDecartToPolar(TargetPredictionDecartRelative(target));
@@ -156,16 +117,21 @@ namespace Asteroids.Standard
                 {
 
 
+
+
                     var diff = Target.CenterCoordinates.Angle;//.CenterRelativeLocationPolar(_ship).Angle;
-                    if (Target.Velocity.HasValue)
-                    {
-                        TriangleInfo triangle = TargetPredictionTriangleInfo(Target);
-                        var targetAngle = (triangle.C - triangle.A).GetPolarCoordinates().Angle;
+                    //if (Target.Velocity.HasValue)
+                    //{
+                    //    TriangleInfo triangle = TargetPredictionTriangleInfo(Target);
+                    //    var targetAngle = (triangle.C - triangle.A).GetPolarCoordinates().Angle;
 
-                        var diff2 = targetAngle - _ship.GetRadians();
+                    //    var diff2 = targetAngle - _ship.GetRadians();
 
-                        diff = MathHelper.NormalizeAngle( diff2);
-                    }
+                    //    diff = MathHelper.NormalizeAngle( diff2);
+                    //}
+
+                    diff = Target.GetCenterCoordinatesPredicted(_ship).Angle;
+
 
                     StatusText.TextVal = $" SHIP=[ {(Angle)_ship.GetRadians()} ] TARGETANGLE=[{Target.CenterRelativeLocationPolar(_ship).Angle}] DIFF=[{diff}]";
                     //_ship.Game._textDraw.DrawText(
@@ -188,13 +154,17 @@ namespace Asteroids.Standard
                     {
                         if (Math.Sign(_ship.LastRotationSpeedDegrees) == Math.Sign(diff.Value))
                         {
-                            _ship.Rotate(diff.Value * ScreenCanvas.FramesPerSecond);
+                            rotateAngle = diff.Value * ScreenCanvas.FramesPerSecond;
                         }
                     }
 
                     if (rotateAngle != 0)
                     {
-                        _ship.Rotate(rotateAngle);
+                        var rotatedAngle = _ship.Rotate(rotateAngle);
+                        foreach (var each in staticView)
+                        {
+                            each.CenterCoordinates.Angle -= rotatedAngle;
+                        }
                     }
 
                     //Target.CenterCoordinates.Angle += rotateAngle;
@@ -222,9 +192,39 @@ namespace Asteroids.Standard
                     //double targetCenterAngleDegrees = Math.Abs(MathHelper.ToDegrees(diff));
 
 
+
+                    //diff = Target.CenterCoordinates.Angle;//.CenterRelativeLocationPolar(_ship).Angle;
+                    //if (Target.Velocity.HasValue)
+                    //{
+                    //    TriangleInfo triangle = TargetPredictionTriangleInfo(Target);
+                    //    var targetAngle = (triangle.C - triangle.A).GetPolarCoordinates().Angle;
+
+                    //    var diff2 = targetAngle - _ship.GetRadians();
+
+                    //    diff = MathHelper.NormalizeAngle(diff2);
+                    //}
+                    diff = Target.GetCenterCoordinatesPredicted(_ship).Angle;
+
+
+
                     if (Math.Abs(diff) < MathHelper.ToRadians(1))
                     {
                         allowFire |= true;
+
+                    }
+
+                    foreach (var each in staticView)
+                    {
+                        if (each == Target)
+                        {
+                            continue;
+                        }
+
+                        var eachDiff = each.GetCenterCoordinatesPredicted(_ship).Angle;
+                        if (Math.Abs(eachDiff) < MathHelper.ToRadians(3))
+                        {
+                            allowFire |= true;
+                        }
                     }
 
                     /*
@@ -294,6 +294,7 @@ namespace Asteroids.Standard
                     foreach (var bullet in _env._cache.GetBulletsAvailable())
                     {
                         bullet.ScreenObject.Shoot(_ship);
+                        /*
                         var c = _ship.GetCurrentLocation();
                         var v = new VectorD { Start = c, End = c, Color = DrawColor.Orange };
                         v.SetPolarCoordinates(new PolarCoordinates { Angle = _ship.GetRadians(), Distance = 10000 });
@@ -308,7 +309,7 @@ namespace Asteroids.Standard
                                 _ship.BulletDirections.Remove(v);
                             }
                         });
-
+                        */
                         //_ship.Game.Pause();
 
 
@@ -423,40 +424,22 @@ namespace Asteroids.Standard
             {
                 var ret = new List<IVectorD>();// { ShipDirectionVector };
 
-                //var p = TargetPredictionVector;
-                //if (p != null)
-                //{
-                //    ret.Add(p);
-                //}
+/*
                 if (Target != null)
                 {
 
                     // target movement prediction
-                    //IVectorD m = TargetPredictionDecartAbsolute(Target);
-                    //var d = MathHelper.TransformPolarToDecart(Target.CenterCoordinates);
                     var t = TargetPredictionTriangleInfo(Target);
                     ret.Add(new VectorD { Start = t.A, End = t.C, Color = DrawColor.Yellow });
                     ret.Add(new VectorD { Start = t.A, End = t.B });
                     ret.Add(new VectorD { Start = t.B, End = t.C, Color = DrawColor.Blue });
-
-                    // ship optimal position for shooting in current target
-                    //var a = TargetPredictionDecartRelativeToShip(Target);
-                    //ret.Add(a);
-
-                    //if (Math.Abs(a.End.X - m.End.X) > 0.000001)
-                    //{
-                    //    Debug.WriteLine($" X1=[{a.End.X}]    X2=[{m.End.X}]");
-                    //}
                 }
-
-                //ret.AddRange(_env.TransformViewToFPV().Select(v=> TargetPredictionDecartAbsolute(v)).ToArray());
-                //ret.AddRange(_env.TransformViewToFPV().Select(v => TargetPredictionDecartAbsolute(v)).ToArray());
 
                 if (shoots.Any())
                 {
                     //ret.AddRange(shoots);
                 }
-
+*/
                 return ret;
             }
         }
@@ -489,7 +472,10 @@ namespace Asteroids.Standard
                 }
                 */
 
-                var ret = new List<IPoligonD> { TargetPolygon };
+                var ret = new List<IPoligonD>
+                {
+                    //    TargetPolygon 
+                };
                 //if (TargetPredictionPolygon != null)
                 //{
                 //    ret.Add(TargetPredictionPolygon);
@@ -514,25 +500,25 @@ namespace Asteroids.Standard
             {
                 var ret = new List<Text>();
 
+                /*
+                                if (Target != null)
+                                {
 
-                if (Target != null)
-                {
+                                    TriangleInfo triangle = TargetPredictionTriangleInfo(Target);
 
-                    TriangleInfo triangle = TargetPredictionTriangleInfo(Target);
-
-                    var targetAngle = (triangle.C - triangle.A).GetPolarCoordinates().Angle;
-                    var diff = Target.CenterRelativeLocationPolar(_ship).Angle;
-                    //if (Target.Velocity.HasValue)
-                    {
-                        diff = TragetPredictedAngleToShipDiff(Target);
-                    }
-
-
-                    if (!string.IsNullOrWhiteSpace(StatusText.TextVal))
-                        ret.Add(StatusText);
-                }
+                                    var targetAngle = (triangle.C - triangle.A).GetPolarCoordinates().Angle;
+                                    var diff = Target.CenterRelativeLocationPolar(_ship).Angle;
+                                    //if (Target.Velocity.HasValue)
+                                    {
+                                        diff = TragetPredictedAngleToShipDiff(Target);
+                                    }
 
 
+                                    if (!string.IsNullOrWhiteSpace(StatusText.TextVal))
+                                        ret.Add(StatusText);
+                                }
+
+                */
                 return ret;
             }
         }

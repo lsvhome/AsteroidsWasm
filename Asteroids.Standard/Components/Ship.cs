@@ -122,7 +122,7 @@ namespace Asteroids.Standard.Components
 
         public Angle LastRotationSpeedDegrees { get; private set; } = 0;
 
-        protected internal override void Rotate(double radians)
+        protected internal override double Rotate(double radians)
         {
             if (Math.Abs(radians) > MaxRotateSpeedRadians)
             {
@@ -130,7 +130,7 @@ namespace Asteroids.Standard.Components
             }
 
             LastRotationSpeedDegrees = radians;
-            base.Rotate(radians);
+            return base.Rotate(radians);
         }
 
         /// <summary>
@@ -232,6 +232,7 @@ namespace Asteroids.Standard.Components
             get
             {
                 var ret = new List<IVectorD>();
+                /*
                 ret.Add(ShipDirectionVector);
                 ret.Add(new VectorD { Start = new PointD(k, k), End = new PointD(1500, k), Color = DrawColor.Blue });
                 ret.Add(new VectorD { Start = new PointD(k, k), End = new PointD(k, 1500), Color = DrawColor.Blue });
@@ -239,7 +240,7 @@ namespace Asteroids.Standard.Components
                 {
                     ret.AddRange(BulletDirections);
                 }
-                
+                */
 
                 return ret;
             }
@@ -317,7 +318,7 @@ namespace Asteroids.Standard.Components
             {
                 var ret = new List<Text>();
 
-
+/*
 
                 var p = new PointD { X = 100, Y = 800 };
                 var t = new Text(
@@ -330,7 +331,7 @@ namespace Asteroids.Standard.Components
                     );
 
                 ret.Add(t);
-
+*/
                 return ret;
             }
         }

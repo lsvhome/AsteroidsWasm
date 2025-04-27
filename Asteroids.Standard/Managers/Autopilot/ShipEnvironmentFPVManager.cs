@@ -29,17 +29,26 @@ namespace Asteroids.Standard
                     throw new InvalidOperationException("Ship cannot be null.");
                 }
                 
-                var misiles = _cache.MissilePoints?.ToList();
-                if (misiles != null)
+                var misilePoints = _cache.MissilePoints?.ToList();
+                if (misilePoints != null)
                 {
-                    foreach (var obj in misiles)
+                    var misilePointsFPV = new List<ShipEnvironmentObjectLocation>();
+                    foreach (var obj in misilePoints)
                     {
                         var objLoc = new ShipEnvironmentObjectLocation(TransformViewToFPV(obj, _cache.Ship), 0, 0);
 
                         objLoc.ObjectType = ObjectType.Misile;
                         objLoc.Distance = objLoc.CenterCoordinates.Distance;
-                        ret.Add(objLoc);
+                        misilePointsFPV.Add(objLoc);
                     }
+                    var misileAngle = misilePointsFPV.Select(p=>p.CenterCoordinates.Angle.Value).Average();
+                    var misileDistance = misilePointsFPV.Select(p => p.CenterCoordinates.Distance).Average();
+
+                    var objLoc1 = new ShipEnvironmentObjectLocation(new PolarCoordinates { Angle = misileAngle, Distance = misileDistance }, 0, 0);
+
+                    objLoc1.ObjectType = ObjectType.Misile;
+                    objLoc1.Distance = objLoc1.CenterCoordinates.Distance;
+                    ret.Add(objLoc1);
                 }
 
                 if (_cache.Saucer != null)

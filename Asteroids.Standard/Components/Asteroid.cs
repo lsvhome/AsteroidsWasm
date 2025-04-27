@@ -63,10 +63,10 @@ namespace Asteroids.Standard.Components
             _rotateSpeed = (RandomizeHelper.Random.Next(10000) - 5000) / fps * ScreenCanvas.RadiansPerDegree;
 
             // choose a velocity for the asteroid (smaller asteroids can go faster)
-            //VelocityX = 3 * (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
+            VelocityX = (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
             VelocityY = (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
-            VelocityX = 5000 / fps;// 1000 / fps;
-            VelocityY = 0;// 1000 / fps;
+            //VelocityX = 500 / fps;// 1000 / fps;
+            //VelocityY = 0;// 1000 / fps;
         }
 
         /// <summary>
@@ -174,8 +174,8 @@ namespace Asteroids.Standard.Components
                 ));
             });
 
-            //int k = 9;
-            int k = 4;
+            int k = 9;
+            //int k = 4;
 
             for (var i = 0; i < k; i++)
             {
