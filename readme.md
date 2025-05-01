@@ -1,6 +1,6 @@
 # Asteroids in .NET Framework, .NET 9, WinUI3, Maui, Electron, AvaloniaUI, and Blazor WebAssembly
 
-## Live Demo: https://aesalazar.github.io/AsteroidsWasm/
+## Live Demo: https://lsvhome.github.io/AsteroidsWasm
 
 This project is a POC to determine the plausibility of writing a .NET Standard library and using it across devices INCLUDING WebAssembly (WASM).  The root library, Asteroids.Standard, encapsulates all logic for rendering the classic '80s video game.  None of this is meant to be production-worthy.  It is more me just messing around trying to see what works.
 
