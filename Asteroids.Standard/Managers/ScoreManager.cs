@@ -1,3 +1,4 @@
+using Asteroids.Standard.Components;
 using Asteroids.Standard.Enums;
 using static Asteroids.Standard.Sounds.ActionSounds;
 
@@ -112,7 +113,7 @@ namespace Asteroids.Standard.Managers
 
             _textDraw.DrawText(
                 strScore
-                , TextManager.Justify.Left
+                , DrawableText.Justify.Left
                 , ScoreTop
                 , ScoreLetterWidth
                 , ScoreLetterHeight
@@ -123,7 +124,7 @@ namespace Asteroids.Standard.Managers
 
             _textDraw.DrawText(
                 strScore
-                , TextManager.Justify.Center
+                , DrawableText.Justify.Center
                 , ScoreTop
                 , ScoreLetterWidth
                 , ScoreLetterHeight

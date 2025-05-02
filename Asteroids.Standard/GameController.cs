@@ -189,7 +189,6 @@ namespace Asteroids.Standard
                 else if (key == PlayKey.A)
                 {
                     _APressed = !_APressed;
-                    Console.WriteLine($"_APressed {_APressed}");
                 }
 
                 // Hyperspace (can't be held down)
@@ -293,7 +292,6 @@ namespace Asteroids.Standard
             if (_rightPressed)
                 _game.Right();
 
-
             _game.Thrust(_upPressed);
             _game.DoGameMovements();
 
@@ -350,10 +348,7 @@ namespace Asteroids.Standard
         {
             // Screen Flip Timer
             _timerFlip = new Timer(TimerInterval);
-            _timerFlip.Elapsed += async (s, e) =>
-            {
-                await FlipDisplay();
-            };
+            _timerFlip.Elapsed += async (s, e) => await FlipDisplay();
             _timerFlip.AutoReset = true;
             _timerFlip.Enabled = true;
         }

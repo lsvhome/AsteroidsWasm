@@ -66,7 +66,7 @@ namespace Asteroids.Standard.Screen
             //Draw instructions
             _textManager.DrawText(
                 Instructions
-                , TextManager.Justify.Center
+                , DrawableText.Justify.Center
                 , InstructionOffset
                 , InstructionSize, InstructionSize
             );
@@ -85,7 +85,7 @@ namespace Asteroids.Standard.Screen
             _letterSize += _increment;
             _textManager.DrawText(
                 _title
-                , TextManager.Justify.Center
+                , DrawableText.Justify.Center
                 , ScreenCanvas.CanvasHeight / 2 - _letterSize
                 , _letterSize
                 , _letterSize * 2
@@ -94,7 +94,7 @@ namespace Asteroids.Standard.Screen
             // Draw copyright notice
             _textManager.DrawText(
                 Copyright1
-                , TextManager.Justify.Center
+                , DrawableText.Justify.Center
                 , TitleOffset1
                 , TitleSize
                 , TitleSize
@@ -102,7 +102,7 @@ namespace Asteroids.Standard.Screen
 
             _textManager.DrawText(
                 Copyright2
-                , TextManager.Justify.Center
+                , DrawableText.Justify.Center
                 , TitleOffset2
                 , TitleSize
                 , TitleSize

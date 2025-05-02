@@ -37,35 +37,34 @@ namespace Asteroids.WinForms
         /// </summary>
         private void InitializeComponent()
         {
-            _frame1 = new Asteroids.WinForms.Classes.GraphicPictureBox();
-            ((ISupportInitialize)_frame1).BeginInit();
-            SuspendLayout();
+            this._frame1 = new Classes.GraphicPictureBox();
+            ((ISupportInitialize)(this._frame1)).BeginInit();
+            this.SuspendLayout();
             // 
             // _frame1
             // 
-            _frame1.BackColor = System.Drawing.SystemColors.WindowText;
-            _frame1.Dock = System.Windows.Forms.DockStyle.Fill;
-            _frame1.Location = new System.Drawing.Point(0, 0);
-            _frame1.Name = "_frame1";
-            _frame1.Size = new System.Drawing.Size(634, 461);
-            _frame1.TabIndex = 2;
-            _frame1.TabStop = false;
+            this._frame1.BackColor = System.Drawing.SystemColors.WindowText;
+            this._frame1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._frame1.Location = new System.Drawing.Point(0, 0);
+            this._frame1.Name = "_frame1";
+            this._frame1.Size = new System.Drawing.Size(634, 461);
+            this._frame1.TabIndex = 2;
+            this._frame1.TabStop = false;
             // 
             // FrmAsteroids
             // 
-            AutoScaleBaseSize = new System.Drawing.Size(6, 16);
-            ClientSize = new System.Drawing.Size(634, 461);
-            Controls.Add(_frame1);
-            Name = "FrmAsteroids";
-            Text = "Asteroids";
-            WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            Activated += frmAsteroids_Activated;
-            Closed += frmAsteroids_Closed;
-            KeyDown += frmAsteroids_KeyDown;
-            KeyUp += frmAsteroids_KeyUp;
-            Resize += frmAsteroids_Resize;
-            ((ISupportInitialize)_frame1).EndInit();
-            ResumeLayout(false);
+            this.AutoScaleBaseSize = new System.Drawing.Size(12, 28);
+            this.ClientSize = new System.Drawing.Size(634, 461);
+            this.Controls.Add(this._frame1);
+            this.Name = "FrmAsteroids";
+            this.Text = "Asteroids";
+            this.Activated += new System.EventHandler(this.frmAsteroids_Activated);
+            this.Closed += new System.EventHandler(this.frmAsteroids_Closed);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmAsteroids_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmAsteroids_KeyUp);
+            this.Resize += new System.EventHandler(this.frmAsteroids_Resize);
+            ((System.ComponentModel.ISupportInitialize)(this._frame1)).EndInit();
+            this.ResumeLayout(false);
 
         }
 

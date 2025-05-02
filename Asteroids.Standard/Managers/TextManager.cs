@@ -1,12 +1,13 @@
 using System.Drawing;
 using Asteroids.Standard.Screen;
+using Asteroids.Standard.Components;
 
 namespace Asteroids.Standard.Managers
 {
     /// <summary>
     /// Converts and draws text to a <see cref="ScreenCanvas"/>.
     /// </summary>
-    public sealed class TextManager
+    internal sealed class TextManager
     {
         private readonly ScreenCanvas _screenCanvas;
 
@@ -20,11 +21,6 @@ namespace Asteroids.Standard.Managers
         }
 
         /// <summary>
-        /// Text horizontal justification.
-        /// </summary>
-        public enum Justify { Left, Center, Right };
-
-        /// <summary>
         /// Coverts text to vector and draws on the <see cref="ScreenCanvas"/>.
         /// </summary>
         /// <param name="text">String to draw.</param>
@@ -32,7 +28,7 @@ namespace Asteroids.Standard.Managers
         /// <param name="locationTop">Top position to draw from.</param>
         /// <param name="letterWidth">Width of each letter.</param>
         /// <param name="letterHeight">Height of each letter.</param>
-        public void DrawText(string text, Justify justification, int locationTop, int letterWidth, int letterHeight)
+        public void DrawText(string text, DrawableText.Justify justification, int locationTop, int letterWidth, int letterHeight)
         {
             int printStart;
             const int width = ScreenCanvas.CanvasWidth;
@@ -40,13 +36,13 @@ namespace Asteroids.Standard.Managers
 
             switch (justification)
             {
-                case Justify.Left:
+                case DrawableText.Justify.Left:
                     printStart = 100;
                     break;
-                case Justify.Center:
+                case DrawableText.Justify.Center:
                     printStart = (int)((width - text.Length * letterWidth) / 2.0);
                     break;
-                case Justify.Right:
+                case DrawableText.Justify.Right:
                     printStart = height - 100 - text.Length * letterWidth;
                     break;
                 default:

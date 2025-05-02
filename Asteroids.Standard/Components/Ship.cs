@@ -226,7 +226,7 @@ namespace Asteroids.Standard.Components
 
 
         public IList<PointD> Dots => new List<PointD>();
-        int k = 150;
+
         public IList<IVectorD> Vectors
         {
             get
@@ -312,11 +312,11 @@ namespace Asteroids.Standard.Components
             return ret;
         }
 
-        public IList<Text> Texts
+        public IList<DrawableText> Texts
         {
             get
             {
-                var ret = new List<Text>();
+                var ret = new List<DrawableText>();
 
 /*
 

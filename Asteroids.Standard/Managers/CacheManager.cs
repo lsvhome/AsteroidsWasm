@@ -352,7 +352,7 @@ namespace Asteroids.Standard.Managers
             if (Ship != null)
             {
                 ret.Add(Ship);
-                
+
                 if (Ship.AutoPilot != null)
                 {
                     ret.Add(Ship.AutoPilot);

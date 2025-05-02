@@ -476,20 +476,20 @@ namespace Asteroids.Standard
             }
         }
 
-        Text StatusText = new Text(
+        DrawableText StatusText = new DrawableText(
                         $"",
                         new PointD { X = 100, Y = 500 },
                         DrawColor.Red,
-                        TextManager.Justify.Center,
+                        DrawableText.Justify.Center,
                         500,
                         100, 200
                         );
 
-        public IList<Text> Texts
+        public IList<DrawableText> Texts
         {
             get
             {
-                var ret = new List<Text>();
+                var ret = new List<DrawableText>();
 
                 /*
                                 if (Target != null)

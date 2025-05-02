@@ -108,7 +108,7 @@ namespace Asteroids.Standard.Components
 
         public IList<IPoligonD> Poligons => new List<IPoligonD>();
 
-        public IList<Text> Texts => new List<Text>();
+        public IList<DrawableText> Texts => new List<DrawableText>();
 
         #endregion IDrawableObject
     }

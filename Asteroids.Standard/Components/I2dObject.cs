@@ -51,30 +51,6 @@ namespace Asteroids.Standard.Components
         }
     }
 
-    public class Text
-    {
-        public Text(string textVal, PointD start, DrawColor color, Justify justification, int locationTop, int letterWidth, int letterHeight)
-        {
-            TextVal = textVal;
-            Start = start;
-            Color = color;
-            Justification = justification;
-            LocationTop = locationTop;
-            LetterWidth = letterWidth;
-            LetterHeight = letterHeight;
-        }
-        public DrawColor Color { get; set; }
-        public PointD Start { get; set; }
-        public string TextVal { get; set; }
-
-        public Justify Justification { get; set; }
-
-        public int LocationTop { get; set; }
-        public int LetterWidth { get; set; }
-
-        public int LetterHeight { get; set; }
-    }
-
 
     public interface IVectorD
     {
@@ -113,17 +89,6 @@ namespace Asteroids.Standard.Components
     {
         public DrawColor Color { get; set; } = DrawColor.White;
         public IList<PointD> Points { get; set; } = new List<PointD>();
-    }
-
-    public interface IDrawableObject
-    {
-        public IList<PointD> Dots { get; }
-
-        public IList<IVectorD> Vectors { get; }
-
-        public IList<IPoligonD> Poligons { get; }
-
-        public IList<Text> Texts { get; }
     }
 }
 #nullable restore

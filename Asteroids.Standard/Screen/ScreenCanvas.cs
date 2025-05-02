@@ -16,14 +16,13 @@ namespace Asteroids.Standard.Screen
     /// <remarks>
     /// Angle 0 is pointing "down", 90 is "left" on the canvas
     /// </remarks>
-    public sealed class ScreenCanvas
+    internal sealed class ScreenCanvas
     {
         private readonly object _updatePointsLock;
         private readonly object _updatePolysLock;
         private readonly IList<(Point[], DrawColor)> _points;
         private readonly IList<(Point[], DrawColor)> _polys;
 
-        //private Point _center = new Point ( 3500, 3500 );
         private Point _lastPoint;
         private DrawColor _lastPen;
 
@@ -99,7 +98,7 @@ namespace Asteroids.Standard.Screen
             _lastPoint = ptEnd;
             _lastPen = penColor;
 
-            var pts = new [] { ptStart, ptEnd };
+            var pts = new[] { ptStart, ptEnd };
             lock (_updatePointsLock)
                 _points.Add((pts, penColor));
         }
@@ -144,7 +143,7 @@ namespace Asteroids.Standard.Screen
             for (var i = 0; i < polygonPoints.Count; i++)
             {
                 ptsPoly[i].X = (int)(polygonPoints[i].X / CanvasWidthDouble * Size.Width);
-                ptsPoly[i].Y = qqq-(int)(polygonPoints[i].Y / CanvasHeightDouble * Size.Height);
+                ptsPoly[i].Y = screenHeight - (int)(polygonPoints[i].Y / CanvasHeightDouble * Size.Height);
             }
 
             AddPolygon(ptsPoly, penColor);
@@ -161,15 +160,15 @@ namespace Asteroids.Standard.Screen
         {
             var ptDraw = new Point(
                 (int)(origin.X / CanvasWidthDouble * Size.Width),
-                qqq-(int)(origin.Y / CanvasHeightDouble * Size.Height)
+                screenHeight - (int)(origin.Y / CanvasHeightDouble * Size.Height)
             );
 
-            var ptDraw2 = new Point(ptDraw.X + (int)(canvasOffsetX / CanvasWidthDouble * Size.Width), 
+            var ptDraw2 = new Point(ptDraw.X + (int)(canvasOffsetX / CanvasWidthDouble * Size.Width),
                 ptDraw.Y - (int)(canvasOffsetY / CanvasHeightDouble * Size.Height));
             AddLine(ptDraw, ptDraw2, penColor);
         }
 
-        int qqq => Size.Height;
+        int screenHeight => Size.Height;
 
         #region Statics
 

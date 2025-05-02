@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using Asteroids.Standard.Components;
 using Asteroids.Standard.Enums;
-using Asteroids.Standard.Helpers;
 using Asteroids.Standard.Screen;
 
 namespace Asteroids.Standard.Managers
@@ -17,14 +16,16 @@ namespace Asteroids.Standard.Managers
     {
         private readonly CacheManager _cache;
         private readonly ScreenCanvas _canvas;
+        private readonly TextManager _textDraw;
 
         /// <summary>
         /// Creates a new instance of <see cref="DrawingManager"/>
         /// </summary>
         /// <param name="cache">Screen object cache to draw.</param>
         /// <param name="canvas">Canvas to draw cache to.</param>
-        public DrawingManager(CacheManager cache, ScreenCanvas canvas)
+        public DrawingManager(CacheManager cache, ScreenCanvas canvas, TextManager textDraw)
         {
+            _textDraw = textDraw;
             _cache = cache;
             _canvas = canvas;
         }
@@ -87,7 +88,7 @@ namespace Asteroids.Standard.Managers
 
                 foreach (var txt in obj.Texts)
                 {
-                    _cache.Ship.Game._textDraw.DrawText(
+                    _textDraw.DrawText(
                         txt.TextVal
                         , txt.Justification
                         , (int)txt.Start.Y

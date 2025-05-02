@@ -16,12 +16,12 @@ namespace Asteroids.Standard.Screen
     {
         #region Fields and Constructor
 
-        private const int AsteroidStartCount = 1;//4;
+        private const int AsteroidStartCount = 4;
         private const int SaucerScore = 1000;
         private const int PauseInterval = (int)ScreenCanvas.FramesPerSecond;
 
         private readonly ScoreManager _score;
-        public TextManager _textDraw { get; private set; }
+        private readonly TextManager _textDraw;
 
         private readonly CacheManager _cache;
         private readonly CollisionManager _collisionManager;
@@ -59,7 +59,7 @@ namespace Asteroids.Standard.Screen
             _cache.UpdateShip(ship);
 
             _collisionManager = new CollisionManager(_cache);
-            _drawingManager = new DrawingManager(_cache, canvas);
+            _drawingManager = new DrawingManager(_cache, canvas, _textDraw);
 
             //Unpaused
             _paused = false;
@@ -127,7 +127,7 @@ namespace Asteroids.Standard.Screen
                 {
                     _textDraw.DrawText(
                         "PAUSE"
-                        , TextManager.Justify.Center
+                        , DrawableText.Justify.Center
                         , ScreenCanvas.CanvasHeight / 3
                         , 200, 400
                     );
@@ -138,30 +138,9 @@ namespace Asteroids.Standard.Screen
             }
             else // Do all game processing if game is not paused
             {
-
                 var origScore = _score.CurrentScore;
+
                 var noExplosions = _cache.ExplosionCount() == 0;
-                /*
-                // If no ship displaying, after explosions are done
-                // get a new one - or end the game
-
-                if (_cache.Ship?.IsAlive != true && noExplosions)
-                {
-                    if (!_score.HasReserveShips())
-                    {
-                        // Game over
-                        _inProcess = false;
-                    }
-                    else if (_collisionManager.IsCenterSafe())
-                    {
-                        _score.DecrementReserveShips();
-                        _cache.UpdateShip(new Ship(this));
-                    }
-                }
-
-                // Move all objects starting with the ship
-                _cache.Ship?.Move();
-                */
 
                 // Create a new asteroid belt if no explosions and no asteroids
                 if (noExplosions && _cache.Belt.Count() == 0)
@@ -215,10 +194,7 @@ namespace Asteroids.Standard.Screen
                     var missileCollision = _collisionManager.MissileCollision(shipPoints);
                     var asteroidBeltCollision = _collisionManager.AsteroidBeltCollision(shipPoints);
 
-                    if (saucerCollision
-                        || missileCollision
-                        || asteroidBeltCollision
-                    )
+                    if (saucerCollision || missileCollision || asteroidBeltCollision)
                     {
                         foreach (var explosion in _cache.Ship.Explode())
                             _cache.AddExplosion(explosion);
@@ -248,8 +224,6 @@ namespace Asteroids.Standard.Screen
                     }
                 }
             }
-
-
         }
 
         public void DrawScreen()
@@ -286,7 +260,7 @@ namespace Asteroids.Standard.Screen
         /// </summary>
         public void Left()
         {
-            if (/*_paused || */_cache.Ship?.IsAlive != true)
+            if (_paused || _cache.Ship?.IsAlive != true)
                 return;
 
             _cache.Ship.RotateLeft();
@@ -305,7 +279,7 @@ namespace Asteroids.Standard.Screen
         /// </summary>
         public void Right()
         {
-            if (/*_paused ||*/ _cache.Ship?.IsAlive != true)
+            if (_paused || _cache.Ship?.IsAlive != true)
                 return;
 
             _cache.Ship.RotateRight();
