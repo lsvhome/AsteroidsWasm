@@ -31,7 +31,6 @@ namespace Asteroids.Standard.Components
             for (int i = 0; i < iNumAsteroids; i++)
             {
                 var size = Asteroid.AsteroidSize.Large - RandomizeHelper.Random.Next(minSize);
-                //var size = Asteroid.AsteroidSize.Small;// Asteroid.AsteroidSize.Large - RandomizeHelper.Random.Next(minSize);
                 asteroids.Add(new Asteroid(size));
             }
 

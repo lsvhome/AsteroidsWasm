@@ -88,7 +88,7 @@ namespace Asteroids.Standard.Components
 
         #region IDrawableObject
 
-        public IList<PointD> Dots => new List<PointD>();
+        public IList<PointD> Dots { get; } = new List<PointD>();
 
         public IList<IVectorD> Vectors
         {
@@ -106,9 +106,9 @@ namespace Asteroids.Standard.Components
             }
         }
 
-        public IList<IPoligonD> Poligons => new List<IPoligonD>();
+        public IList<IPoligonD> Poligons { get; } = new List<IPoligonD>();
 
-        public IList<DrawableText> Texts => new List<DrawableText>();
+        public IList<DrawableText> Texts { get; } = new List<DrawableText>();
 
         #endregion IDrawableObject
     }

@@ -225,52 +225,13 @@ namespace Asteroids.Standard.Components
         public List<IVectorD> BulletDirections = new List<IVectorD>();
 
 
-        public IList<PointD> Dots => new List<PointD>();
+        public IList<PointD> Dots { get; } = new List<PointD>();
 
-        public IList<IVectorD> Vectors
-        {
-            get
-            {
-                var ret = new List<IVectorD>();
-                /*
-                ret.Add(ShipDirectionVector);
-                ret.Add(new VectorD { Start = new PointD(k, k), End = new PointD(1500, k), Color = DrawColor.Blue });
-                ret.Add(new VectorD { Start = new PointD(k, k), End = new PointD(k, 1500), Color = DrawColor.Blue });
-                lock (_lock_BulletDirections)
-                {
-                    ret.AddRange(BulletDirections);
-                }
-                */
-
-                return ret;
-            }
-        }
+        public IList<IVectorD> Vectors { get; } = new List<IVectorD>();
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> {
-
             new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
-
-            //new Poligon { Color = DrawColor.Blue, Points = OutFrame().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
-            //new Poligon { Color = DrawColor.Blue, Points = IntFrame().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
-            //new Poligon { Color = DrawColor.Orange, Points = CanvasOrientationTriangle().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
-            
-            //new Poligon { Color = DrawColor.Blue, Points = ShipOrientationTriangle().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() }
-
         };
-
-        IList<Point> OutFrame()
-        {
-            int min = 100;
-            int maxX = 10000 - min;
-            int maxY = 7500 - min;
-            var ret = new List<Point>();
-            ret.Add(new Point(min, min));
-            ret.Add(new Point(maxX, min));
-            ret.Add(new Point(maxX, maxY));
-            ret.Add(new Point(min, maxY));
-
-            return ret;
-        }
 
         public IList<Point> IntFrame()
         {
@@ -287,54 +248,7 @@ namespace Asteroids.Standard.Components
             return ret;
         }
 
-        IList<Point> CanvasOrientationTriangle()
-        {
-            var ret = new List<Point>();
-            int k = 200;
-            ret.Add(new PointD(k, k));
-            ret.Add(new PointD(10000 - k, 7500 - k));
-            ret.Add(new PointD(k, 7500 - k));
-
-
-            return ret;
-        }
-
-        IList<Point> ShipOrientationTriangle()
-        {
-
-            var ret = new List<Point>();
-            int k = 200;
-            ret.Add(new PointD(CurrentLocation.X, CurrentLocation.Y));
-            ret.Add(new PointD(CurrentLocation.X + k, CurrentLocation.Y - k));
-            ret.Add(new PointD(CurrentLocation.X - 0, CurrentLocation.Y - k));
-
-
-            return ret;
-        }
-
-        public IList<DrawableText> Texts
-        {
-            get
-            {
-                var ret = new List<DrawableText>();
-
-/*
-
-                var p = new PointD { X = 100, Y = 800 };
-                var t = new Text(
-                    $" SHIP=[ {(Angle)this.GetRadians()} ] RS=[ {(int)LastRotationSpeedDegrees.ValueDegee} ] ",
-                    p,
-                    DrawColor.Red,
-                    TextManager.Justify.Center,
-                    (int)p.Y,
-                    100, 200
-                    );
-
-                ret.Add(t);
-*/
-                return ret;
-            }
-        }
+        public IList<DrawableText> Texts { get; } = new List<DrawableText>();
 
         #endregion IDrawableObject
     }

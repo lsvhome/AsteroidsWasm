@@ -1,10 +1,10 @@
+using Asteroids.Standard.Enums;
+using Asteroids.Standard.Helpers;
+using Asteroids.Standard.Screen;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Asteroids.Standard.Enums;
 using System.Linq;
-using Asteroids.Standard.Helpers;
-using Asteroids.Standard.Screen;
 
 namespace Asteroids.Standard.Components
 {
@@ -27,11 +27,9 @@ namespace Asteroids.Standard.Components
             Size = size;
 
             // Can't place the object randomly in constructor - stinky
-            CurrentLocation.X = RandomizeHelper.Random.Next(100, ScreenCanvas.CanvasWidth - 100)  ;
-            //CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight - 1);
+            CurrentLocation.X = RandomizeHelper.Random.Next(2) * (ScreenCanvas.CanvasWidth - 1);
+            CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight - 1);
 
-            //CurrentLocation.Y = RandomizeHelper.Random.Next(ScreenCanvas.CanvasHeight*3/4, ScreenCanvas.CanvasHeight - 100);
-            CurrentLocation.Y = RandomizeHelper.Random.Next(100, ScreenCanvas.CanvasHeight/2 - 200);
             RandomVelocity();
             InitPoints();
         }
@@ -65,8 +63,6 @@ namespace Asteroids.Standard.Components
             // choose a velocity for the asteroid (smaller asteroids can go faster)
             VelocityX = (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
             VelocityY = (RandomizeHelper.Random.NextDouble() * 2000 - 1000) * sizeFactor / fps;
-            //VelocityX = 500 / fps;// 1000 / fps;
-            //VelocityY = 0;// 1000 / fps;
         }
 
         /// <summary>
@@ -170,16 +166,14 @@ namespace Asteroids.Standard.Components
             {
                 l.Add(new Point(
                     (int)(Math.Sin(radPt) * ((int)aSize * SizeIncrement))
-                    , (int)(Math.Cos(radPt) * ((int)aSize * SizeIncrement))
+                  , (int)(Math.Cos(radPt) * ((int)aSize * SizeIncrement))
                 ));
             });
 
-            int k = 9;
-            //int k = 4;
-
-            for (var i = 0; i < k; i++)
+            int pointsNumber = 9;
+            for (var i = 0; i < pointsNumber; i++)
             {
-                var radPt = i * (360 / k) * (Math.PI / 180);
+                var radPt = i * (360 / pointsNumber) * (Math.PI / 180);
                 addPoint(PointsTemplateDne, radPt, AsteroidSize.Dne);
                 addPoint(PointsTemplateSmall, radPt, AsteroidSize.Small);
                 addPoint(PointsTemplateMedium, radPt, AsteroidSize.Medium);
@@ -192,15 +186,13 @@ namespace Asteroids.Standard.Components
 
         #region IDrawableObject
 
-        public IList<PointD> Dots => new List<PointD>();
+        public IList<PointD> Dots { get; } = new List<PointD>();
 
-        public IList<IVectorD> Vectors => new List<IVectorD>();
+        public IList<IVectorD> Vectors { get; } = new List<IVectorD>();
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
 
-        public IList<DrawableText> Texts => new List<DrawableText> { 
-            //new Text(((int)MathHelper.ToDegrees(Radians)).ToString(), CurrentLocation, DrawColor.Orange, ) { Start = CurrentLocation, Color = DrawColor.Orange } 
-        };
+        public IList<DrawableText> Texts { get; } = new List<DrawableText> {};
 
         #endregion IDrawableObject
     }

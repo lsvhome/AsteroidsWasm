@@ -150,9 +150,9 @@ namespace Asteroids.Standard.Components
 
         #region IDrawableObject
 
-        public IList<PointD> Dots => new List<PointD>();
+        public IList<PointD> Dots { get; } = new List<PointD>();
 
-        public IList<IVectorD> Vectors => new List<IVectorD>();
+        public IList<IVectorD> Vectors { get; } = new List<IVectorD>();
 
         public IList<IPoligonD> Poligons
         {
@@ -169,7 +169,7 @@ namespace Asteroids.Standard.Components
             }
         }
 
-        public IList<DrawableText> Texts => new List<DrawableText>();
+        public IList<DrawableText> Texts { get; } = new List<DrawableText>();
 
         #endregion IDrawableObject
     }

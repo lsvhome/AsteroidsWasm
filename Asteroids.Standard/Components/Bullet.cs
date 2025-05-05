@@ -1,9 +1,9 @@
+using Asteroids.Standard.Enums;
+using Asteroids.Standard.Screen;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Asteroids.Standard.Enums;
 using System.Linq;
-using Asteroids.Standard.Screen;
 
 namespace Asteroids.Standard.Components
 {
@@ -42,7 +42,11 @@ namespace Asteroids.Standard.Components
             _remainingFrames = 0;
         }
 
+        /// <summary>
+        /// Initial velocity
+        /// </summary>
         public static double InitialVelocity = 100;
+
         /// <summary>
         /// Fire the bullet from a parent ship.
         /// </summary>
@@ -98,13 +102,13 @@ namespace Asteroids.Standard.Components
 
         #region IDrawableObject
 
-        public IList<PointD> Dots => new List<PointD>();
+        public IList<PointD> Dots { get; } = new List<PointD>();
 
-        public IList<IVectorD> Vectors => new List<IVectorD>();
+        public IList<IVectorD> Vectors { get; } = new List<IVectorD>();
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
 
-        public IList<DrawableText> Texts => new List<DrawableText>();
+        public IList<DrawableText> Texts { get; } = new List<DrawableText>();
 
         #endregion IDrawableObject
     }
