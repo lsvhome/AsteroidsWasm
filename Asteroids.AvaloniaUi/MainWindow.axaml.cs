@@ -113,6 +113,14 @@ namespace Asteroids.AvaloniaUi
                     key = PlayKey.P;
                     break;
 
+                case Key.A:
+                    key = PlayKey.A;
+                    break;
+
+                case Key.M:
+                    key = PlayKey.M;
+                    break;
+
                 default:
                     return;
             }
@@ -151,6 +159,14 @@ namespace Asteroids.AvaloniaUi
 
                 case Key.P:
                     key = PlayKey.P;
+                    break;
+
+                case Key.A:
+                    key = PlayKey.A;
+                    break;
+
+                case Key.M:
+                    key = PlayKey.M;
                     break;
 
                 default:

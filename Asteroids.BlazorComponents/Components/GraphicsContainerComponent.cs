@@ -236,6 +236,10 @@ namespace Asteroids.BlazorComponents.Components
                     key = PlayKey.A;
                     break;
 
+                case ConsoleKey.M:
+                    key = PlayKey.M;
+                    break;
+
                 default:
                     return;
             }
@@ -286,6 +290,10 @@ namespace Asteroids.BlazorComponents.Components
 
                 case ConsoleKey.A:
                     key = PlayKey.A;
+                    break;
+
+                case ConsoleKey.M:
+                    key = PlayKey.M;
                     break;
 
                 default:

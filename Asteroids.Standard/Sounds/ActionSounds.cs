@@ -52,7 +52,12 @@ namespace Asteroids.Standard.Sounds
         /// <param name="sound">Sound to play.</param>
         public static void PlaySound(object sender, ActionSound sound)
         {
-            SoundTriggered?.Invoke(sender, sound);
+            if (!Mute)
+            {
+                SoundTriggered?.Invoke(sender, sound);
+            }
         }
+
+        public static bool Mute = false;
     }
 }

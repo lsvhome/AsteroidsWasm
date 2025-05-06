@@ -69,6 +69,7 @@ namespace Asteroids.Standard
         private Game _game;
 
         private bool _APressed;
+        private bool _MPressed;
         private bool _leftPressed;
         private bool _rightPressed;
         private bool _upPressed;
@@ -191,6 +192,12 @@ namespace Asteroids.Standard
                     _APressed = !_APressed;
                 }
 
+                else if (key == PlayKey.M)
+                {
+                    _MPressed = !_MPressed;
+                    Sounds.ActionSounds.Mute = _MPressed;
+                }
+
                 // Hyperspace (can't be held down)
                 else if (!_hyperspaceLastPressed && key == PlayKey.Down)
                 {
@@ -224,6 +231,12 @@ namespace Asteroids.Standard
             if (key == PlayKey.A)
             {
                 // Autopilot would be swithed off by second press to A - do nothing
+            }
+
+            // Mute
+            if (key == PlayKey.M)
+            {
+                // Unmute would be swithed off by second press to M - do nothing
             }
 
             // Rotate Left
