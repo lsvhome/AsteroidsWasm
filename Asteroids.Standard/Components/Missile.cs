@@ -82,19 +82,19 @@ namespace Asteroids.Standard.Components
         /// </summary>
         static Missile()
         {
-            const int s = 12;
+            const int s = 12 * 2;
 
-            PointsTemplate.Add(new Point(0, -4 * s));
-            PointsTemplate.Add(new Point(s, -3 * s));
+            PointsTemplate.Add(new Point(0, 4 * s));
             PointsTemplate.Add(new Point(s, 3 * s));
-            PointsTemplate.Add(new Point(2 * s, 4 * s));
+            PointsTemplate.Add(new Point(s, -3 * s));
+            PointsTemplate.Add(new Point(2 * s, -4 * s));
 
-            PointsTemplate.Add(new Point(s, 4 * s)); //Midpoint for thrust
-            PointsTemplate.Add(new Point(-s, 4 * s)); //Midpoint for thrust
+            PointsTemplate.Add(new Point(s, -4 * s)); //Midpoint for thrust
+            PointsTemplate.Add(new Point(-s, -4 * s)); //Midpoint for thrust
 
-            PointsTemplate.Add(new Point(-2 * s, 4 * s));
-            PointsTemplate.Add(new Point(-s, 3 * s));
+            PointsTemplate.Add(new Point(-2 * s, -4 * s));
             PointsTemplate.Add(new Point(-s, -3 * s));
+            PointsTemplate.Add(new Point(-s, 3 * s));
 
             PointThrust1 = 4;
             PointThrust2 = 5;
