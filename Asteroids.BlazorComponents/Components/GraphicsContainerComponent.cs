@@ -116,8 +116,8 @@ namespace Asteroids.BlazorComponents.Components
         /// <summary>
         /// Wires the key press handlers.
         /// </summary>
-        /// <param name="drawColorMap">Collection (read-only) of <see cref="DrawColor"/> used by the game engine and associated HEX-based (HTML) color strings.</param>
-        public async Task Initialize(IDictionary<DrawColor, string> drawColorMap)
+        /// <param name="drawColorMap">Collection (read-only) of <see cref="Standard.Color"/> used by the game engine and associated HEX-based (HTML) color strings.</param>
+        public async Task Initialize(IDictionary<System.Drawing.Color, string> drawColorMap)
         {
             if (JsRuntime == null)
                 throw new TypeInitializationException(GetType().Name, new NullReferenceException(nameof(JsRuntime)));

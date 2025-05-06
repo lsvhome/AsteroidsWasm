@@ -9,9 +9,9 @@ namespace Asteroids.Standard.Interfaces
     public interface IGraphicLine
     {
         /// <summary>
-        /// <see cref="DrawColor"/> for the graphic.
+        /// <see cref="Color"/> for the graphic.
         /// </summary>
-        DrawColor Color { get; }
+        Color Color { get; }
 
         /// <summary>
         /// Staring point.

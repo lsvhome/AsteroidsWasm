@@ -7,13 +7,13 @@ namespace Asteroids.Standard.Components
 {
     internal sealed class GraphicPolygon : IGraphicPolygon
     {
-        public GraphicPolygon(DrawColor color, IList<Point> points)
+        public GraphicPolygon(Color color, IList<Point> points)
         {
             Color = color;
             Points = points;
         }
 
-        public DrawColor Color { get; }
+        public Color Color { get; }
 
         public IList<Point> Points { get; }
     }

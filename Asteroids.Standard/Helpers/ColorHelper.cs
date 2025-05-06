@@ -12,29 +12,29 @@ namespace Asteroids.Standard.Helpers
     internal static class ColorHelper
     {
         /// <summary>
-        /// Collection of <see cref="DrawColor"/> HEX string values used by the game engine.
+        /// Collection of <see cref="Color"/> HEX string values used by the game engine.
         /// </summary>
-        public static IDictionary<DrawColor, string> DrawColorMap { get; } = new ReadOnlyDictionary<DrawColor, string>(
-            new Dictionary<DrawColor, string>
+        public static IDictionary<Color, string> DrawColorMap { get; } = new ReadOnlyDictionary<Color, string>(
+            new Dictionary<Color, string>
             {
-                [DrawColor.White] = Color.White.ToHexString(),
-                [DrawColor.Red] = Color.Red.ToHexString(),
-                [DrawColor.Yellow] = Color.Yellow.ToHexString(),
-                [DrawColor.Orange] = Color.Orange.ToHexString(),
-                [DrawColor.Blue] = Color.Blue.ToHexString(),
-                [DrawColor.Gray] = Color.Gray.ToHexString(),
+                [Color.White] = System.Drawing.Color.White.ToHexString(),
+                [Color.Red] = System.Drawing.Color.Red.ToHexString(),
+                [Color.Yellow] = System.Drawing.Color.Yellow.ToHexString(),
+                [Color.Orange] = System.Drawing.Color.Orange.ToHexString(),
+                [Color.Blue] = System.Drawing.Color.Blue.ToHexString(),
+                [Color.Gray] = System.Drawing.Color.Gray.ToHexString(),
             }
         );
 
         /// <summary>
-        /// Collection of <see cref="DrawColor"/> keys in <see cref="DrawColorMap"/>.
+        /// Collection of <see cref="Color"/> keys in <see cref="DrawColorMap"/>.
         /// </summary>
-        public static IList<DrawColor> DrawColorList { get; } = DrawColorMap.Keys.OrderBy(k => k).ToList();
+        public static IList<Color> DrawColorList { get; } = DrawColorMap.Keys.OrderBy(k => k.GetBrightness()).ToList();
 
         /// <summary>
-        /// Converts a <see cref="Color"/> to an html-formatted text string (e.g. #RRGGBB).
+        /// Converts a <see cref="System.Drawing.Color"/> to an html-formatted text string (e.g. #RRGGBB).
         /// </summary>
-        public static string ToHexString(this Color c)
+        public static string ToHexString(this System.Drawing.Color c)
         {
             return $"#{c.R:X2}{c.G:X2}{c.B:X2}";
         }

@@ -370,7 +370,7 @@ namespace Asteroids.Standard
                 //Console.WriteLine($"Target center = {squareCenter}, cl={cl}, dv={dv}, cc={Target.CenterCoordinates}");
                 var ret = new Poligon
                 {
-                    Color = DrawColor.Red,
+                    Color = Color.Red,
                     Points = new List<PointD>
                     {
                         new PointD { X = squareCenter.X - sideLength, Y = squareCenter.Y + sideLength},
@@ -479,7 +479,7 @@ namespace Asteroids.Standard
         DrawableText StatusText = new DrawableText(
                         $"",
                         new PointD { X = 100, Y = 500 },
-                        DrawColor.Red,
+                        Color.Red,
                         DrawableText.Justify.Center,
                         500,
                         100, 200

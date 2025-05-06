@@ -17,7 +17,7 @@ namespace Asteroids.BlazorComponents.Components
     {
         private const string StylePolygon = "stroke=width:1px; fill:transparent; ";
 
-        private IDictionary<DrawColor, string>? _colors;
+        private IDictionary<System.Drawing.Color, string>? _colors;
 
         private const string AttributeLine = "line";
         private const string AttributeLineX1 = "x1";
@@ -37,10 +37,10 @@ namespace Asteroids.BlazorComponents.Components
         /// <summary>
         /// Initialize the SVG in anticipation of drawing.
         /// </summary>
-        /// <param name="drawColorMap">Collection (read-only) of <see cref="DrawColor"/> used by the game engine and associated HEX-based (HTML) color strings.</param>
-        public void Initialize(IDictionary<DrawColor, string> drawColorMap)
+        /// <param name="drawColorMap">Collection (read-only) of <see cref="Color"/> used by the game engine and associated HEX-based (HTML) color strings.</param>
+        public void Initialize(IDictionary<System.Drawing.Color, string> drawColorMap)
         {
-            _colors = new ReadOnlyDictionary<DrawColor, string>(drawColorMap);
+            _colors = new ReadOnlyDictionary<System.Drawing.Color, string>(drawColorMap);
         }
 
         /// <summary>

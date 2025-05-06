@@ -20,11 +20,11 @@ namespace Asteroids.Standard.Screen
     {
         private readonly object _updatePointsLock;
         private readonly object _updatePolysLock;
-        private readonly IList<(Point[], DrawColor)> _points;
-        private readonly IList<(Point[], DrawColor)> _polys;
+        private readonly IList<(Point[], Color)> _points;
+        private readonly IList<(Point[], Color)> _polys;
 
         private Point _lastPoint;
-        private DrawColor _lastPen;
+        private Color _lastPen;
 
         /// <summary>
         /// Creates a new instance of <see cref="ScreenCanvas"/>.
@@ -36,12 +36,12 @@ namespace Asteroids.Standard.Screen
 
             _updatePointsLock = new object();
             _updatePolysLock = new object();
-            _points = new List<(Point[], DrawColor)>();
-            _polys = new List<(Point[], DrawColor)>();
+            _points = new List<(Point[], Color)>();
+            _polys = new List<(Point[], Color)>();
 
             //Set in case a call to add to end is made prior to creating a line
             _lastPoint = new Point(0, 0);
-            _lastPen = DrawColor.White;
+            _lastPen = Color.White;
         }
 
         /// <summary>
@@ -66,11 +66,11 @@ namespace Asteroids.Standard.Screen
         /// </summary>
         public async Task Draw(IGraphicContainer container)
         {
-            var pts = new List<(Point[], DrawColor)>();
+            var pts = new List<(Point[], Color)>();
             lock (_updatePointsLock)
                 pts.AddRange(_points);
 
-            var polys = new List<(Point[], DrawColor)>();
+            var polys = new List<(Point[], Color)>();
             lock (_updatePolysLock)
                 polys.AddRange(_polys);
 
@@ -93,7 +93,7 @@ namespace Asteroids.Standard.Screen
         /// <summary>
         /// Adds a line between two points with a pen color without translation.
         /// </summary>
-        public void AddLine(Point ptStart, Point ptEnd, DrawColor penColor)
+        public void AddLine(Point ptStart, Point ptEnd, Color penColor)
         {
             _lastPoint = ptEnd;
             _lastPen = penColor;
@@ -108,7 +108,7 @@ namespace Asteroids.Standard.Screen
         /// </summary>
         public void AddLine(Point ptStart, Point ptEnd)
         {
-            AddLine(ptStart, ptEnd, DrawColor.White);
+            AddLine(ptStart, ptEnd, Color.White);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Asteroids.Standard.Screen
         /// </summary>
         /// <param name="polygonPoints">Collection of points to draw on the canvas.</param>
         /// <param name="penColor">Hex color to apply to the polygon.</param>
-        public void AddPolygon(Point[] polygonPoints, DrawColor penColor)
+        public void AddPolygon(Point[] polygonPoints, Color penColor)
         {
             lock (_updatePolysLock)
                 _polys.Add((polygonPoints, penColor));
@@ -137,7 +137,7 @@ namespace Asteroids.Standard.Screen
         /// </summary>
         /// <param name="polygonPoints">Collection of points to draw on the canvas.</param>
         /// <param name="penColor">Hex color to apply to the polygon.</param>
-        public void LoadPolygon(IList<Point> polygonPoints, DrawColor penColor)
+        public void LoadPolygon(IList<Point> polygonPoints, Color penColor)
         {
             var ptsPoly = new Point[polygonPoints.Count];
             for (var i = 0; i < polygonPoints.Count; i++)
@@ -156,7 +156,7 @@ namespace Asteroids.Standard.Screen
         /// <param name="canvasOffsetX">Offset X to be added AFTER translation of the origin.</param>
         /// <param name="canvasOffsetY">Offset Y to be added AFTER translation of the origin.</param>
         /// <param name="penColor">Hex color to apply to the line vector.</param>
-        public void LoadVector(Point origin, int canvasOffsetX, int canvasOffsetY, DrawColor penColor)
+        public void LoadVector(Point origin, int canvasOffsetX, int canvasOffsetY, Color penColor)
         {
             var ptDraw = new Point(
                 (int)(origin.X / CanvasWidthDouble * Size.Width),

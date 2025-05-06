@@ -15,13 +15,13 @@ namespace Asteroids.WinUi3.Classes
     /// </summary>
     internal sealed class GraphicsContainer : SKXamlCanvas, IGraphicContainer
     {
-        private IDictionary<DrawColor, SKPaint> _colorCache = new Dictionary<DrawColor, SKPaint>();
+        private IDictionary<System.Drawing.Color, SKPaint> _colorCache = new Dictionary<System.Drawing.Color, SKPaint>();
         private IEnumerable<IGraphicLine> _lastLines = [];
         private IEnumerable<IGraphicPolygon> _lastPolygons = [];
 
-        public Task Initialize(IDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IDictionary<System.Drawing.Color, string> drawColorMap)
         {
-            _colorCache = new ReadOnlyDictionary<DrawColor, SKPaint>(
+            _colorCache = new ReadOnlyDictionary<System.Drawing.Color, SKPaint>(
                 drawColorMap.ToDictionary(
                     kvp => kvp.Key
                     , kvp => ColorHelper.ColorHexToPaint(kvp.Value)

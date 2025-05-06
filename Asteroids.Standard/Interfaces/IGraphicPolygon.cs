@@ -10,9 +10,9 @@ namespace Asteroids.Standard.Interfaces
     public interface IGraphicPolygon
     {
         /// <summary>
-        /// <see cref="DrawColor"/> for the graphic.
+        /// <see cref="Color"/> for the graphic.
         /// </summary>
-        DrawColor Color { get; }
+        Color Color { get; }
 
         /// <summary>
         /// Collection of points to connect (non-closing)

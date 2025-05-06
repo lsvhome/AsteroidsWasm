@@ -32,7 +32,12 @@ namespace Asteroids.Standard.Managers
 
         #region Drawing Primatives
 
-        private void DrawPolygon(IList<Point>? points, DrawColor color = DrawColor.White)
+        private void DrawPolygon(IList<Point>? points)
+        {
+            DrawPolygon(points, Color.White);
+        }
+
+        private void DrawPolygon(IList<Point>? points, Color color)
         {
             if (points == null || !points.Any())
                 return;
@@ -40,12 +45,12 @@ namespace Asteroids.Standard.Managers
             _canvas.LoadPolygon(points, color);
         }
 
-        private void DrawVector(Point origin, int offsetX, int offsetY, DrawColor color)
+        private void DrawVector(Point origin, int offsetX, int offsetY, Color color)
         {
             _canvas.LoadVector(origin, offsetX, offsetY, color);
         }
 
-        private void DrawDot(Point origin, DrawColor color)
+        private void DrawDot(Point origin, Color color)
         {
             _canvas.LoadVector(origin, 0, 0, color);
         }

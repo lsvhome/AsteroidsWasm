@@ -17,7 +17,13 @@ namespace Asteroids.Standard.Components
         {
         }
 
-        public PointD(double x, double y, DrawColor Color = DrawColor.White)
+        public PointD(double x, double y): this(x,y, Color.White)
+        {
+            this.X = x;
+            this.Y = y;
+        }
+
+        public PointD(double x, double y, Color Color)
         {
             this.X = x;
             this.Y = y;
@@ -30,7 +36,7 @@ namespace Asteroids.Standard.Components
             this.Y = t.Y;
         }
 
-        public DrawColor Color { get; set; } = DrawColor.White;
+        public Color Color { get; set; } = Color.White;
         public double X { get; set; }
         public double Y { get; set; }
 
@@ -54,14 +60,14 @@ namespace Asteroids.Standard.Components
 
     public interface IVectorD
     {
-        public DrawColor Color { get; set; }
+        public Color Color { get; set; }
         public PointD Start { get; }
         public PointD End { get; }
     }
 
     public class VectorD : IVectorD
     {
-        public DrawColor Color { get; set; } = DrawColor.White;
+        public Color Color { get; set; } = Color.White;
         public PointD Start { get; set; } = new PointD();
         public PointD End { get; set; } = new PointD();
 
@@ -81,13 +87,13 @@ namespace Asteroids.Standard.Components
 
     public interface IPoligonD
     {
-        public DrawColor Color { get; set; }
+        public Color Color { get; set; }
         public IList<PointD> Points { get; }
     }
 
     public class Poligon : IPoligonD
     {
-        public DrawColor Color { get; set; } = DrawColor.White;
+        public Color Color { get; set; } = Color.White;
         public IList<PointD> Points { get; set; } = new List<PointD>();
     }
 }

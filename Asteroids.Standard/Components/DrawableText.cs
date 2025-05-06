@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using Asteroids.Standard.Enums;
+using System.Drawing;
 
 namespace Asteroids.Standard.Components
 {
@@ -10,7 +11,7 @@ namespace Asteroids.Standard.Components
         /// </summary>
         public enum Justify { Left, Center, Right };
 
-        public DrawableText(string textVal, PointD start, DrawColor color, Justify justification, int locationTop, int letterWidth, int letterHeight)
+        public DrawableText(string textVal, PointD start, Color color, Justify justification, int locationTop, int letterWidth, int letterHeight)
         {
             TextVal = textVal;
             Start = start;
@@ -20,7 +21,7 @@ namespace Asteroids.Standard.Components
             LetterWidth = letterWidth;
             LetterHeight = letterHeight;
         }
-        public DrawColor Color { get; set; }
+        public Color Color { get; set; }
         public PointD Start { get; set; }
         public string TextVal { get; set; }
 

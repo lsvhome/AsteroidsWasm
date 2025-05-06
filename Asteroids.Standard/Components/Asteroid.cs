@@ -190,7 +190,7 @@ namespace Asteroids.Standard.Components
 
         public IList<IVectorD> Vectors { get; } = new List<IVectorD>();
 
-        public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
+        public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = Color.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
 
         public IList<DrawableText> Texts { get; } = new List<DrawableText> {};
 

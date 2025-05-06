@@ -6,7 +6,7 @@ namespace Asteroids.Standard.Components
 {
     internal sealed class GraphicLine : IGraphicLine
     {
-        public DrawColor Color { get; set; }
+        public Color Color { get; set; }
 
         public Point Point1 { get; set; }
 

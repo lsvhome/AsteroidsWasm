@@ -15,17 +15,17 @@ namespace Asteroids.AvaloniaUi.Classes
     public sealed class GraphicsContainer : Canvas, IGraphicContainer
     {
         private readonly Dispatcher _mainDispatcher;
-        private IDictionary<DrawColor, IBrush> _colorCache = new Dictionary<DrawColor, IBrush>();
+        private IDictionary<System.Drawing.Color, IBrush> _colorCache = new Dictionary<System.Drawing.Color, IBrush>();
 
         public GraphicsContainer()
         {
             _mainDispatcher = Dispatcher.UIThread;
-            _colorCache = new Dictionary<DrawColor, IBrush>();
+            _colorCache = new Dictionary<System.Drawing.Color, IBrush>();
         }
 
-        public Task Initialize(IDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IDictionary<System.Drawing.Color, string> drawColorMap)
         {
-            _colorCache = new ReadOnlyDictionary<DrawColor, IBrush>(
+            _colorCache = new ReadOnlyDictionary<System.Drawing.Color, IBrush>(
                 drawColorMap.ToDictionary(
                     kvp => kvp.Key
                     , kvp => Brush.Parse(kvp.Value)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Asteroids.Standard.Components;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Managers;
@@ -114,7 +115,7 @@ namespace Asteroids.Standard.Screen
             foreach (var asteroid in _cache.GetAsteroids())
             {
                 asteroid.ScreenObject.Move();
-                _canvas.LoadPolygon(asteroid.PolygonPoints, DrawColor.White);
+                _canvas.LoadPolygon(asteroid.PolygonPoints, Color.White);
             }
         }
     }

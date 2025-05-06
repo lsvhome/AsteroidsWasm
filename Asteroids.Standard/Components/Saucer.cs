@@ -159,10 +159,10 @@ namespace Asteroids.Standard.Components
             get
             {
                 var ret = new List<IPoligonD>();
-                ret.Add(new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() });
+                ret.Add(new Poligon { Color = Color.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() });
                 if (this.Missile != null)
                 {
-                    ret.Add(new Poligon { Color = DrawColor.White, Points = Missile.GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() });
+                    ret.Add(new Poligon { Color = Color.White, Points = Missile.GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() });
                 }
 
                 return ret;

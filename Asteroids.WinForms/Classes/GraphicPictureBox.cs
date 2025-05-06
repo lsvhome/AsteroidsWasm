@@ -11,20 +11,20 @@ namespace Asteroids.WinForms.Classes
 {
     internal sealed class GraphicPictureBox : PictureBox, IGraphicContainer
     {
-        private IDictionary<DrawColor, Pen> _colorCache;
+        private IDictionary<System.Drawing.Color, Pen> _colorCache;
         private IEnumerable<IGraphicLine> _lastLines = new List<IGraphicLine>();
         private IEnumerable<IGraphicPolygon> _lastPolygons = new List<IGraphicPolygon>();
 
         public GraphicPictureBox()
         {
-            _colorCache = new Dictionary<DrawColor, Pen>();
+            _colorCache = new Dictionary<System.Drawing.Color, Pen>();
             _lastLines = new List<IGraphicLine>();
             _lastPolygons = new List<IGraphicPolygon>();
         }
 
-        public Task Initialize(IDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IDictionary<System.Drawing.Color, string> drawColorMap)
         {
-            _colorCache = new ReadOnlyDictionary<DrawColor, Pen>(
+            _colorCache = new ReadOnlyDictionary<System.Drawing.Color, Pen>(
                 drawColorMap.ToDictionary(
                     kvp => kvp.Key
                     , kvp => new Pen(ColorTranslator.FromHtml(kvp.Value))

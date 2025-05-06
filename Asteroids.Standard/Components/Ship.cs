@@ -210,7 +210,7 @@ namespace Asteroids.Standard.Components
                 {
                     Start = cl,
                     End = end,
-                    Color = DrawColor.Red
+                    Color = Color.Red
                 };
 
                 //Console.WriteLine($"Ship direction vector: {dx} {dy} ; r = {r}={MathHelper.ToDegrees(r)}:= {MathHelper.NormalizeAngle(r)}={MathHelper.ToDegrees(MathHelper.NormalizeAngle(r))}");
@@ -230,7 +230,7 @@ namespace Asteroids.Standard.Components
         public IList<IVectorD> Vectors { get; } = new List<IVectorD>();
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> {
-            new Poligon { Color = DrawColor.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
+            new Poligon { Color = Color.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() },
         };
 
         public IList<Point> IntFrame()

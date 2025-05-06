@@ -17,8 +17,8 @@ namespace Asteroids.Standard.Helpers
         /// <summary>
         /// Generates a random color for any fire or explosion.
         /// </summary>
-        /// <returns>Random <see cref="DrawColor"/>.</returns>
-        public static DrawColor GetRandomFireColor()
+        /// <returns>Random <see cref="Color"/>.</returns>
+        public static Color GetRandomFireColor()
         {
             var idx = Random.Next(ColorHelper.DrawColorList.Count);
             return ColorHelper.DrawColorList[idx];
