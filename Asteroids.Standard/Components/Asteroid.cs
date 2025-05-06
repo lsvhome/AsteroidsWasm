@@ -134,7 +134,7 @@ namespace Asteroids.Standard.Components
         /// <summary>
         /// Increment between asteroids sizes.
         /// </summary>
-        public const int SizeIncrement = 220;
+        public const int SizeIncrement = 100;
 
         /// <summary>
         /// Non-transformed point template for creating a non-sized asteroid.
