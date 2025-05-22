@@ -38,7 +38,7 @@ namespace Asteroids.Standard
 
                 var staticView = _env.TransformViewToFPV();
 
-                Target = staticView.OrderByDescending(x => x.ObjectType).ThenBy(x => x.CenterCoordinates.Distance).FirstOrDefault();
+                Target = FindTarget(staticView);
 
 
 
@@ -347,6 +347,11 @@ namespace Asteroids.Standard
             {
                 Console.WriteLine(ex.ToString());
             }
+        }
+
+        private static ShipEnvironmentObjectLocation FindTarget(IEnumerable<ShipEnvironmentObjectLocation> staticView)
+        {
+            return staticView.OrderByDescending(x => x.ObjectType).ThenBy(x => x.CenterCoordinates.Distance).FirstOrDefault();
         }
 
         #region IDrawableObject
