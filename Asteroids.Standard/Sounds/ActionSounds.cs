@@ -50,9 +50,9 @@ namespace Asteroids.Standard.Sounds
         /// </summary>
         /// <param name="sender">Calling object.</param>
         /// <param name="sound">Sound to play.</param>
-        public static void PlaySound(object sender, ActionSound sound)
+        public static void PlaySound(object sender, ActionSound sound, bool force = false)
         {
-            if (!Mute)
+            if (!Mute || force)
             {
                 SoundTriggered?.Invoke(sender, sound);
             }

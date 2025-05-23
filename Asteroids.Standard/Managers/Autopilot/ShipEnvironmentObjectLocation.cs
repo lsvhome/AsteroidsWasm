@@ -103,6 +103,12 @@ namespace Asteroids.Standard
             return ret;
         }
 
-
+        public Angle GetAngleToShip(Ship ship)
+        {
+            Angle s = ship.GetRadians();
+            Angle angle = this.VelocityP.Angle - (this.CenterCoordinates.Angle + s - Math.PI);
+            angle = Math.Abs(MathHelper.NormalizeAngle(angle));
+            return angle;
+        }
     }
 }

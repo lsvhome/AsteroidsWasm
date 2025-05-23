@@ -184,11 +184,46 @@ namespace Asteroids.Standard.Components
 
         #endregion
 
+
+        private VectorD DirectionVector
+        {
+            get
+            {
+                var cl = (PointD)this.GetCurrentLocation();
+                var r = this.GetRadians();
+                int k = 100;
+                var dv = new PointD(this.VelocityX*k, this.VelocityY*k);
+
+                //var dv = MathHelper.TransformPolarToDecart(new PolarCoordinates { Angle = this.GetRadians(), Distance = shipDirectionVectorLenght });
+
+                var end = cl + dv;
+                var v = new VectorD
+                {
+                    Start = cl,
+                    End = end,
+                    Color = Color.Green
+                };
+                var p = v.GetPolarCoordinates();
+                p.Distance = 8000;
+                v.SetPolarCoordinates(p);
+                //Console.WriteLine($"Ship direction vector: {dx} {dy} ; r = {r}={MathHelper.ToDegrees(r)}:= {MathHelper.NormalizeAngle(r)}={MathHelper.ToDegrees(MathHelper.NormalizeAngle(r))}");
+                return v;
+                //return TargetPredictionVector ?? v;
+            }
+        }
+
         #region IDrawableObject
 
         public IList<PointD> Dots { get; } = new List<PointD>();
 
-        public IList<IVectorD> Vectors { get; } = new List<IVectorD>();
+        public IList<IVectorD> Vectors
+        {
+            get
+            {
+                var ret = new List<IVectorD> { DirectionVector };
+                return ret;
+            }
+        }
 
         public IList<IPoligonD> Poligons => new List<IPoligonD> { new Poligon { Color = Color.White, Points = GetPoints().Select(p => new PointD { X = p.X, Y = p.Y }).ToList() } };
 

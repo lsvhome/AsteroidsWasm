@@ -45,7 +45,7 @@ namespace Asteroids.Standard.Screen
             _score = score;
             _textDraw = textDraw;
 
-            _currentLevel = AsteroidStartCount;
+            _currentLevel = 1;// AsteroidStartCount;
             _inProcess = true;
 
             //Setup caches with a new ship
@@ -220,7 +220,7 @@ namespace Asteroids.Standard.Screen
                             , RandomizeHelper.Random.Next(10, 90) * ScreenCanvas.CanvasHeight / 100
                         );
 
-                        _cache.UpdateSaucer(new Saucer(pt));
+                        //_cache.UpdateSaucer(new Saucer(pt));
                     }
                 }
             }

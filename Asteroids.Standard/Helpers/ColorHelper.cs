@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Asteroids.Standard.Enums;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
-using Asteroids.Standard.Enums;
+using System.Reflection;
 
 namespace Asteroids.Standard.Helpers
 {
@@ -11,19 +12,27 @@ namespace Asteroids.Standard.Helpers
     /// </summary>
     internal static class ColorHelper
     {
+        private static IEnumerable<Color> AllColors
+        {
+            get
+            {
+                PropertyInfo[] colorProperties = typeof(Color).GetProperties(BindingFlags.Public | BindingFlags.Static);
+                foreach (PropertyInfo property in colorProperties)
+                {
+                    if (property.PropertyType == typeof(Color))
+                    {
+                        yield return (Color)property.GetValue(null, null);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Collection of <see cref="Color"/> HEX string values used by the game engine.
         /// </summary>
-        public static IDictionary<Color, string> DrawColorMap { get; } = new ReadOnlyDictionary<Color, string>(
-            new Dictionary<Color, string>
-            {
-                [Color.White] = System.Drawing.Color.White.ToHexString(),
-                [Color.Red] = System.Drawing.Color.Red.ToHexString(),
-                [Color.Yellow] = System.Drawing.Color.Yellow.ToHexString(),
-                [Color.Orange] = System.Drawing.Color.Orange.ToHexString(),
-                [Color.Blue] = System.Drawing.Color.Blue.ToHexString(),
-                [Color.Gray] = System.Drawing.Color.Gray.ToHexString(),
-            }
+        public static IDictionary<Color, string> DrawColorMap { get; } =
+            new ReadOnlyDictionary<Color, string>(
+                AllColors.ToDictionary(c => c, c => c.ToHexString())
         );
 
         /// <summary>
